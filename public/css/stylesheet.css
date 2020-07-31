@@ -47,6 +47,7 @@ body {
 .row__value {
 /*	background-color: blue;*/
 	width: 70px;
+	white-space: nowrap;
 }
 
 .top-container {
@@ -163,6 +164,6 @@ body {
 	text-align: center;
 	margin: auto;
 	font-size: 10px;
-	max-width: 410px;
+	max-width: 430px;
 	padding: 20px;
 }

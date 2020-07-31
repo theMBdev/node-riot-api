@@ -26,6 +26,10 @@ app.get('/', (req, res) => {
 	let championId;
 	let matchInfo;
 
+	let zoneCode = "euw1";
+	
+	let totalGames;
+
 	let teamId;
 	let winnerId;
 	let matchCount;	
@@ -43,20 +47,26 @@ app.get('/', (req, res) => {
 	let quadraKillsArray = [];
 	let pentaKillsArray = [];
 
+
+	let todaysDateFormated = new Date().toLocaleDateString('en-GB', {
+		month: '2-digit',day: '2-digit',year: '2-digit'})
+	let Days7AgoFormated = new Date(Date.now() - 7*24*60*60*1000).toLocaleDateString('en-GB', {
+		month: '2-digit',day: '2-digit',year: '2-digit'})
+
 	let winArray = [];
 	let dateNow = Date.now();
 	let unix7daysAgo = Date.now() - 7*24*60*60*1000;
-	let shortUnixTest2Days = Date.now();
 
 	let championIdArray = [];
 
+	let experementCount = 0;
 
 	// winP, gamesPlayed, 
 	let manyValues = {};
 
 
 	let optionsGetName = {
-		url: `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${accountName}?api_key=${apiKey}`
+		url: `https://${zoneCode}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${accountName}?api_key=${apiKey}`
 	};
 
 
@@ -71,11 +81,11 @@ app.get('/', (req, res) => {
 			summonerName = info.name;
 
 			let optionsGetMatches = {
-				url: `https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?beginTime=${unix7daysAgo}&api_key=${apiKey}`		
+				url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?beginTime=${unix7daysAgo}&api_key=${apiKey}`		
 			};
 
 			let optionsGetRanks = {
-				url: `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${apiKey}`
+				url: `https://${zoneCode}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${apiKey}`
 			};
 
 			request(optionsGetMatches, callbackGetMatches);
@@ -111,23 +121,57 @@ app.get('/', (req, res) => {
 
 			matchCount = 0;
 
-
+			totalGames = info.totalGames;
 			manyValues["totalGames"] = info.totalGames;
+
+
+
+
+
+			var array = ['some', 'array', 'containing', 'words'];
+			var interval = 60; // how much time should the delay between two iterations be (in milliseconds)?
+			var promise = Promise.resolve();
+
+
+
+			//			array.forEach(function (el) {
+			//				promise = promise.then(function () {
+			//					console.log(el);
+			//					return new Promise(function (resolve) {
+			//						setTimeout(resolve, interval);
+			//					});
+			//				});
+			//			});
+			//
+			//			promise.then(function () {
+			//				console.log('Loop finished.');
+			//			});
+
+
+
 
 			// FOR EACH MATCH GET IF IT WAS WIN OR LOST
 			info.matches.forEach(element => {	
+				promise = promise.then(function () {
 
-				matchInfo = info.matches[matchCount];
-				gameId = info.matches[matchCount].gameId;
-				championIdArray.push(element.champion);
+					matchInfo = info.matches[matchCount];
+					gameId = info.matches[matchCount].gameId;
+					championIdArray.push(element.champion);
 
-				let optionsGetOneMatch = {
-					url: `https://euw1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
-				};			
+					let optionsGetOneMatch = {
+						url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
+					};			
 
-				request(optionsGetOneMatch, callbackGetOneMatch);
+					request(optionsGetOneMatch, callbackGetOneMatch);
 
-				matchCount++;					
+					matchCount++;	
+
+					return new Promise(function (resolve) {
+						setTimeout(resolve, interval);
+					});
+
+
+				})
 			})
 
 
@@ -141,7 +185,8 @@ app.get('/', (req, res) => {
 	function callbackGetOneMatch(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			let info = JSON.parse(body);
-			//			console.log("GetOneMatch")
+
+			experementCount++;
 
 			info.participantIdentities.find(element => {
 				if(element.player.summonerName === summonerName) {
@@ -161,10 +206,13 @@ app.get('/', (req, res) => {
 					quadraKillsArray.push(element.stats.quadraKills)
 					pentaKillsArray.push(element.stats.pentaKills)
 
-
 					var objKey = "0-10";
 
-					creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey])
+					if(element.timeline.creepsPerMinDeltas){
+						creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey])
+					} else {
+						console.log("ERROR", element.timeline);
+					}
 
 				}
 			});
@@ -248,17 +296,10 @@ app.get('/', (req, res) => {
 						let averageDeaths;
 
 						averageKda = (arrSum(killsArray) + arrSum(assistsArray))/ arrSum(deathsArray);
-						console.log("KDAKDA", averageKda.toFixed(2));
-
-
 
 						averageKills = arrSum(killsArray)/ manyValues["totalGames"];
 						averageAssists = arrSum(assistsArray)/ manyValues["totalGames"];
 						averageDeaths = arrSum(deathsArray)/ manyValues["totalGames"];
-
-						console.log("CHAMP", championIdArray)
-
-
 
 						championIdArray;
 
@@ -280,10 +321,7 @@ app.get('/', (req, res) => {
 						}, {});
 						let maxCount = Math.max(...Object.values(counts));
 						let mostFrequent = Object.keys(counts).filter(k => counts[k] === maxCount);
-
-						console.log(mostFrequent[0]);
-
-
+					
 						var championIdMostPlayed = mostFrequent[0];
 
 						// needed to be async so that the champion name value got saved before the page rendered
@@ -300,7 +338,7 @@ app.get('/', (req, res) => {
 									manyValues["mostPlayedChampion"] = championList[i].id;
 								}
 							}
-//							console.log(res);
+							//							console.log(res);
 						}
 
 
@@ -316,7 +354,11 @@ app.get('/', (req, res) => {
 						manyValues["doubleKills"] = arrSum(doubleKillsArray);
 						manyValues["tripleKill"] = arrSum(tripleKillsArray);
 						manyValues["quadraKills"] = arrSum(quadraKillsArray);
-						manyValues["pentaKills"] = arrSum(pentaKillsArray);					
+						manyValues["pentaKills"] = arrSum(pentaKillsArray);		
+
+					
+						manyValues["todaysDateFormated"] = todaysDateFormated;					
+						manyValues["Days7AgoFormated"] = Days7AgoFormated;					
 
 
 						let creepScoreAverage = arrSum(creepScoreArray) / creepScoreArray.length;	
@@ -335,15 +377,16 @@ app.get('/', (req, res) => {
 						manyValues["timePlayed"] = formattedTime;
 						manyValues["winP"] = winPercentage;
 
-							
 
 						async function renderPage() {
 							await getMostPlayedChampionName(championIdMostPlayed);
-							console.log("MV", manyValues);
 							res.render('index', {manyValues: manyValues })
 						}				
 
-						renderPage();
+						if(experementCount === totalGames ) {
+							renderPage();
+						}
+
 
 
 					}
