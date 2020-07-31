@@ -5,15 +5,14 @@ const ejs = require('ejs');
 const port = 3000;
 
 app.set('view engine', 'ejs');
-
-
+app.use(express.static(__dirname + '/public'));
 
 
 // routes
 app.get('/', (req, res) => {
 
-
-	const apiKey = 'RGAPI-a8f5aa38-1555-4371-a0a1-eaf54da44551';
+	const apiKey = 'RGAPI-8509e9fe-4177-487e-9f76-2d75a1749b18';
+	let accountName = "sudofo";
 	//	let accountId = 'wz3GXIlG2798lfGWUFPzhj7wlfBxF9J2QqTJhwPDmz0NTqQ';
 	let accountId;
 	let id;
@@ -22,7 +21,7 @@ app.get('/', (req, res) => {
 	let gameId;
 	let championId;
 	let matchInfo;
-	let accountName = "hazouzo";	
+
 	let teamId;
 	let winnerId;
 	let matchCount;	
@@ -42,26 +41,17 @@ app.get('/', (req, res) => {
 
 	let winArray = [];
 	let dateNow = Date.now();
-	let unix7Days = 7*24*60*60;
-	let unix7daysAgo = Date.now() - 7*24*60*60;
+	let unix7daysAgo = Date.now() - 7*24*60*60*1000;
+	let shortUnixTest2Days = Date.now();
+				
 
 	// winP, gamesPlayed, 
 	let manyValues = {};
 
 
-	//	Leauge v4
-	// takes accountId not encripted got from
-	// gives flex 
-	// gives solo 
-
-	//	https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/MoaPiLjgpJZVcpz1iy4qDEVPlG9Op2R9dUma-5qW2guh5_Q
-
-
 	let optionsGetName = {
 		url: `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${accountName}?api_key=${apiKey}`
 	};
-
-
 
 
 	let winPercentage = 0;
@@ -74,8 +64,14 @@ app.get('/', (req, res) => {
 			id = info.id;
 			summonerName = info.name;
 
+			let value = 4*24*60*60*1000;
+			console.log(value)
+			console.log("old", shortUnixTest2Days);
+			shortUnixTest2Days = shortUnixTest2Days - value;
+			console.log("new", shortUnixTest2Days);
+			
 			let optionsGetMatches = {
-				url: `https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?beginTime=1595439345000&api_key=${apiKey}`		
+				url: `https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?beginTime=${unix7daysAgo}&api_key=${apiKey}`		
 			};
 
 			let optionsGetRanks = {
@@ -86,7 +82,7 @@ app.get('/', (req, res) => {
 			request(optionsGetRanks, callbackGetRanks);
 
 		} else {
-			console.log("error 1", error)
+			console.log("error 1", error, body)
 		}
 	}	
 
@@ -96,6 +92,7 @@ app.get('/', (req, res) => {
 
 			let counter = 0;
 			info.forEach(element => {
+				
 				rankArray.push({"queue": element.queueType,"tier":element.tier,"rank": element.rank});			
 				counter++
 			})
@@ -104,7 +101,7 @@ app.get('/', (req, res) => {
 
 		}
 		else {
-			console.log("error 4", error)
+			console.log("error 4", error, body)
 		}
 	}
 
@@ -135,7 +132,7 @@ app.get('/', (req, res) => {
 			// call 3
 
 		} else {
-			console.log("error 2", error)
+			console.log("error 2", error, body)			
 		}
 	}		
 
@@ -164,7 +161,6 @@ app.get('/', (req, res) => {
 
 
 					var objKey = "0-10";
-					//					console.log("DADADADDAD", element.timeline.creepsPerMinDeltas[objKey])
 
 					creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey])
 
@@ -237,7 +233,8 @@ app.get('/', (req, res) => {
 					if(counter2 === winArray.length) {
 
 						winPercentage = counter / winArray.length;
-						winPercentage = winPercentage.toFixed(2);
+						winPercentage = winPercentage * 100;
+						winPercentage = winPercentage.toFixed(0);
 
 						gameDurationArray
 						const arrSum = arr => arr.reduce((a,b) => a + b, 0)
@@ -269,10 +266,7 @@ app.get('/', (req, res) => {
 						manyValues["timePlayed"] = formattedTime;
 						manyValues["winP"] = winPercentage;
 
-						console.log("MV", manyValues);		
-
-
-						console.log(manyValues.games);
+						console.log("MV", manyValues);	
 
 						res.render('index', {manyValues: manyValues })
 					}
@@ -282,7 +276,7 @@ app.get('/', (req, res) => {
 
 
 		} else {
-			console.log("error 3", error)
+			console.log("error 3", error, body)
 		}
 	}
 

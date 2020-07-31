@@ -1,0 +1,160 @@
+* {
+	margin: 0px;
+	padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Alegreya Sans', sans-serif;
+	background-color: #0C0B1D;
+	color: #98B3D6;
+}
+
+.page-container {
+	width: 100%;
+/*	background-color: antiquewhite;*/
+	height: 100%;
+	position: relative;
+}
+
+.title-container {
+	text-align: center;
+/*	background-color: aqua;*/
+	padding: 20px;
+}
+
+.title-container h2 {
+	font-size: 42px;
+	font-weight: 400;
+}
+
+.title-container p {
+	font-size: 16px;
+}
+
+
+.row {	
+/*	background-color: chartreuse;*/
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.row__title {
+/*	background-color: red;*/
+}
+
+.row__value {
+/*	background-color: blue;*/
+	width: 70px;
+}
+
+.top-container {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	max-width: 300px;
+/*	background-color: darkmagenta;*/
+	margin: auto;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.mid-row-container {
+/*	height: 100px;*/
+	background-color: #13112A;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.mid-row-container__row {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin: auto;
+/*	width: 450px;*/
+/*	background-color: darkslategray;*/
+}
+
+.mid-row-container__title {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.mid-row-container__item {
+	text-align: center;
+	margin-left: 10px;
+	margin-right: 10px;	
+}
+
+.mid-row-container__item span {
+	font-size: 14px;
+}
+
+.row__value__kills {
+	color: #84E48D;
+}
+
+.row__value__deaths {
+	color: #EC8C8C;
+}
+
+.row__value__assists {
+	color: #C6D5E8;
+}
+
+.row__value__slash {
+	color: #98B3D6;
+}
+
+.rank-color-iron {
+	color: #87817E;
+}
+
+.rank-color-bronze {
+	color: #7D432D;
+}
+
+.rank-color-silver {
+	color: #899DA0;
+}
+
+.rank-color-gold {
+	color: #D5A64B;
+}
+
+.rank-color-platinum {
+	color: #7AF8BE;
+}
+
+.rank-color-diamond {
+	color: #493E98;
+}
+
+.rank-color-master {
+	color: #CE2BDD;
+}
+
+.rank-color-grandmaster {
+	color: #B01419;
+}
+
+.rank-color-challenger {
+	color: #5AD6FF;
+}
+
+
+
+.page-container--gradient {
+	height: 100%;
+    width: 100%;
+     background-color: #0C0B1D;
+  background-image: linear-gradient(#0C0836, #0c0b1d);
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+}
+
+.row__value--small {
+	font-size: 8px;
+}

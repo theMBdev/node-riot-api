@@ -2,57 +2,153 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<title>title</title>
-		<link rel="stylesheet" href="/css/stylesheet.css" type="text/css">
+		<link rel="stylesheet" href="css/stylesheet.css" type="text/css">
 
-		<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&&family=Noto+Sans&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans&display=swap" rel="stylesheet">
 
 	</head>
 	<body>
 
-		<h1>Test</h1>
+		<div class="page-container">
+			<div class="page-container--gradient"></div>
 
-		<span>Total Games </span><%= manyValues.totalGames %>
-		<br>
-		<span>Win Percentage </span> <%= manyValues.winP %>
-		<br>
-		<span>Time Played </span> <%= manyValues.timePlayed %>
-		<br>
-		<span>Kills </span> <%= manyValues.kills %>
-		<br>
-		<span>Assists </span> <%= manyValues.assists %>
-		<br>
-		<span>Deaths </span> <%= manyValues.deaths %>
-		<br>
-		<span>Double Kills </span> <%= manyValues.doubleKills %>
-		<br>
-		<span>Triple Kill </span> <%= manyValues.tripleKill %>
-		<br>
-		<span>Quadra Kills </span> <%= manyValues.quadraKills %>
-		<br>
-		<span>Penta Kills </span> <%= manyValues.pentaKills %>
-		<br>
-		<span>Summoner Name </span> <%= manyValues.summonerName %>
-		<br>
-		<span>creep Score </span> <%= manyValues.creepScore010 %>
-		<br>
+			<div class="title-container">
+				<h2>League Weekly</h2>
+				<p>24/07/20 - 31/07/20</p>
+			</div>
 
-		<% for(var i=0; i < manyValues.RankData.length; i++) { %>
+			<div class="top-container">				
 
-		<% if(manyValues.RankData[i].queue === "RANKED_SOLO_5x5" ) { %>
-				Solo Rank
-			<% } else if(manyValues.RankData[i].queue === "RANKED_FLEX_SR") { %>	
-				Flex Rank
-			<%}%>
-		<%= manyValues.RankData[i].tier %>
-		<%= manyValues.RankData[i].rank %>	
-		<br>
+				<div class="row">
+					<span class="row__title">Summoner Name </span><span class="row__value"><%= manyValues.summonerName %></span>
+				</div>
 
-		<% } %>
+				<% for(var i=0; i < manyValues.RankData.length; i++) { %>
+
+				<% if(manyValues.RankData[i].queue === "RANKED_SOLO_5x5" ) { %>
+
+				<div class="row">
+					<span class="row__title">Solo Rank </span>
+					<span id="rankColor" class="row__value rankColor">
+						<%= manyValues.RankData[i].tier %>
+						<%= manyValues.RankData[i].rank %>
+					</span>
+				</div>
+
+				<% } if(manyValues.RankData[i].queue === "RANKED_FLEX_SR") { %>	
+
+				<div class="row">
+					<span class="row__title">Flex Rank </span>
+					<span id="rankColor" class="row__value rankColor">
+						<%= manyValues.RankData[i].tier %>
+						<%= manyValues.RankData[i].rank %>
+					</span>
+				</div>	
+
+				<% } %>
+				<% } %>
+
+				<div class="row">
+					<span class="row__title">Total Games</span><span class="row__value"><%= manyValues.totalGames %></span>
+				</div>
+
+				<div class="row">
+					<span class="row__title">Win Percentage</span><span class="row__value"><%= manyValues.winP + "%"%></span>
+				</div>
+
+				<div class="row">
+					<span class="row__title">KDA</span>
+					<span class="row__value">
+						<span class="row__value__kills"><%= manyValues.kills %><span class="row__value__slash">/</span></span>			
+						<span class="row__value__deaths"><%= manyValues.deaths%><span class="row__value__slash">/</span></span>	
+						<span class="row__value__assists"><%= manyValues.assists %></span>	
+					</span>
+				</div>
+
+				<div class="row">
+					<span class="row__title">Time Played</span><span class="row__value"><%= manyValues.timePlayed %></span>
+				</div>
+
+				<div class="row">
+					<span class="row__title">Average Creep Score</span>
+					<span class="row__value"><%= manyValues.creepScore010 %><span class="row__value--small"> first 10min</span> </span>
+				</div>
+
+			</div>
+
+			<div class="mid-row-container">
+
+				<div class="mid-row-container__title">Multi-Kills</div>
+
+				<div class="mid-row-container__row">
+					<div class="mid-row-container__item">
+						<p><%= manyValues.doubleKills %></p>
+						<span>Double Kills </span>						
+					</div>
+
+					<div class="mid-row-container__item">
+						<p><%= manyValues.tripleKill %></p>
+						<span>Triple Kill </span>						
+					</div>
+
+					<div class="mid-row-container__item">
+						<p><%= manyValues.quadraKills %></p>
+						<span>Quadra Kills </span>						
+					</div>
+
+					<div class="mid-row-container__item">
+						<p><%= manyValues.pentaKills %></p>
+						<span>Penta Kills </span>						
+					</div>
+
+				</div>
+			</div>
+
+
+			<script>
+
+				document.querySelectorAll('.rankColor').forEach(function(item) {
+
+					console.log(item);
+					console.log(item.innerHTML);
+
+					if(item.innerHTML.includes("IRON")) {
+						item.classList.add("rank-color-iron");
+					} 
+					if(item.innerHTML.includes("BRONZE")) {
+						item.classList.add("rank-color-silver");
+					} 
+					if(item.innerHTML.includes("SILVER")) {
+						item.classList.add("rank-color-silver");
+					} 
+					if(item.innerHTML.includes("GOLD")) {
+						item.classList.add("rank-color-gold");
+					} 
+					if(item.innerHTML.includes("PLATINUM")) {
+						item.classList.add("rank-color-platinum");
+					} 
+					if(item.innerHTML.includes("DIAMOND")) {
+						item.classList.add("rank-color-diamond");
+					} 
+					if(item.innerHTML.includes("MASTER")) {
+						item.classList.add("rank-color-master");
+					} 
+					if(item.innerHTML.includes("GRANDMASTER")) {
+						item.classList.add("rank-color-grandmaster");
+					} 
+					if(item.innerHTML.includes("CHALLENGER")) {
+						item.classList.add("rank-color-challenger");
+					} 
+				});
+
+			</script>
 
 
 
 
+		</div>
 	</body>
 </html>
