@@ -52,11 +52,15 @@
 				<% } %>
 
 				<div class="row">
-					<span class="row__title">Total Games</span><span class="row__value"><%= manyValues.totalGames %></span>
+					<span class="row__title">Games Played</span><span class="row__value"><%= manyValues.totalGames %></span>
 				</div>
 
 				<div class="row">
 					<span class="row__title">Win Percentage</span><span class="row__value"><%= manyValues.winP + "%"%></span>
+				</div>
+				
+				<div class="row">
+					<span class="row__title">Most Played Champion</span><span class="row__value"><%= manyValues.mostPlayedChampion %></span>
 				</div>
 
 				<div class="row">
@@ -65,6 +69,15 @@
 						<span class="row__value__kills"><%= manyValues.kills %><span class="row__value__slash">/</span></span>			
 						<span class="row__value__deaths"><%= manyValues.deaths%><span class="row__value__slash">/</span></span>	
 						<span class="row__value__assists"><%= manyValues.assists %></span>	
+					</span>
+				</div>
+
+				<div class="row">
+					<span class="row__title">KDA Average</span>
+					<span class="row__value">
+						<span class="row__value__kills"><%= manyValues.averageKills %><span class="row__value__slash">/</span></span>			
+						<span class="row__value__deaths"><%= manyValues.averageDeaths%><span class="row__value__slash">/</span></span>	
+						<span class="row__value__assists"><%= manyValues.averageAssists %></span>	
 					</span>
 				</div>
 
@@ -106,6 +119,8 @@
 
 				</div>
 			</div>
+			
+			<p class="riotText">Leauge Weekly isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
 
 
 			<script>

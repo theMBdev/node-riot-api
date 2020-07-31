@@ -158,3 +158,11 @@ body {
 .row__value--small {
 	font-size: 8px;
 }
+
+.riotText {
+	text-align: center;
+	margin: auto;
+	font-size: 10px;
+	max-width: 410px;
+	padding: 20px;
+}

@@ -1,8 +1,12 @@
 const express = require('express');
 const request = require('request');
+const fetch = require('node-fetch');
 const app = express();
 const ejs = require('ejs');
 const port = 3000;
+
+var config = require('./config/config');
+apikey = config.apiKey;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -11,8 +15,8 @@ app.use(express.static(__dirname + '/public'));
 // routes
 app.get('/', (req, res) => {
 
-	const apiKey = 'RGAPI-8509e9fe-4177-487e-9f76-2d75a1749b18';
-	let accountName = "sudofo";
+	const apiKey = apikey;
+	let accountName = "hazouzo";
 	//	let accountId = 'wz3GXIlG2798lfGWUFPzhj7wlfBxF9J2QqTJhwPDmz0NTqQ';
 	let accountId;
 	let id;
@@ -32,8 +36,8 @@ app.get('/', (req, res) => {
 	let gameDurationArray = [];
 
 	let killsArray = [];
-	let DeathsArray = [];
-	let AssistsArray = [];
+	let deathsArray = [];
+	let assistsArray = [];
 	let doubleKillsArray = [];
 	let tripleKillsArray = [];
 	let quadraKillsArray = [];
@@ -43,7 +47,9 @@ app.get('/', (req, res) => {
 	let dateNow = Date.now();
 	let unix7daysAgo = Date.now() - 7*24*60*60*1000;
 	let shortUnixTest2Days = Date.now();
-				
+
+	let championIdArray = [];
+
 
 	// winP, gamesPlayed, 
 	let manyValues = {};
@@ -64,12 +70,6 @@ app.get('/', (req, res) => {
 			id = info.id;
 			summonerName = info.name;
 
-			let value = 4*24*60*60*1000;
-			console.log(value)
-			console.log("old", shortUnixTest2Days);
-			shortUnixTest2Days = shortUnixTest2Days - value;
-			console.log("new", shortUnixTest2Days);
-			
 			let optionsGetMatches = {
 				url: `https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?beginTime=${unix7daysAgo}&api_key=${apiKey}`		
 			};
@@ -92,7 +92,7 @@ app.get('/', (req, res) => {
 
 			let counter = 0;
 			info.forEach(element => {
-				
+
 				rankArray.push({"queue": element.queueType,"tier":element.tier,"rank": element.rank});			
 				counter++
 			})
@@ -111,6 +111,7 @@ app.get('/', (req, res) => {
 
 			matchCount = 0;
 
+
 			manyValues["totalGames"] = info.totalGames;
 
 			// FOR EACH MATCH GET IF IT WAS WIN OR LOST
@@ -118,6 +119,7 @@ app.get('/', (req, res) => {
 
 				matchInfo = info.matches[matchCount];
 				gameId = info.matches[matchCount].gameId;
+				championIdArray.push(element.champion);
 
 				let optionsGetOneMatch = {
 					url: `https://euw1.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
@@ -152,8 +154,8 @@ app.get('/', (req, res) => {
 				if(element.participantId === participantId) {
 
 					killsArray.push(element.stats.kills)
-					DeathsArray.push(element.stats.deaths)
-					AssistsArray.push(element.stats.assists)
+					deathsArray.push(element.stats.deaths)
+					assistsArray.push(element.stats.assists)
 					doubleKillsArray.push(element.stats.doubleKills)
 					tripleKillsArray.push(element.stats.tripleKills)
 					quadraKillsArray.push(element.stats.quadraKills)
@@ -239,11 +241,78 @@ app.get('/', (req, res) => {
 						gameDurationArray
 						const arrSum = arr => arr.reduce((a,b) => a + b, 0)
 
-						manyValues["summonerName"] = summonerName;
 
+						let averageKda;
+						let averageKills;
+						let averageAssists;
+						let averageDeaths;
+
+						averageKda = (arrSum(killsArray) + arrSum(assistsArray))/ arrSum(deathsArray);
+						console.log("KDAKDA", averageKda.toFixed(2));
+
+
+
+						averageKills = arrSum(killsArray)/ manyValues["totalGames"];
+						averageAssists = arrSum(assistsArray)/ manyValues["totalGames"];
+						averageDeaths = arrSum(deathsArray)/ manyValues["totalGames"];
+
+						console.log("CHAMP", championIdArray)
+
+
+
+						championIdArray;
+
+						function getMax(arr, prop) {
+							var max;
+							for (var i=0 ; i<arr.length ; i++) {
+								if (!max || parseInt(arr[i][prop]) > parseInt(max[prop]))
+									max = arr[i];
+							}
+							return max;
+						}
+
+
+						let arr = championIdArray;
+						// pulled from stackoverflow
+						let counts = arr.reduce((a, c) => {
+							a[c] = (a[c] || 0) + 1;
+							return a;
+						}, {});
+						let maxCount = Math.max(...Object.values(counts));
+						let mostFrequent = Object.keys(counts).filter(k => counts[k] === maxCount);
+
+						console.log(mostFrequent[0]);
+
+
+						var championIdMostPlayed = mostFrequent[0];
+
+						// needed to be async so that the champion name value got saved before the page rendered
+						async function getMostPlayedChampionName(id) {
+							// API call to leauges champion db
+							let data = await fetch('http://ddragon.leagueoflegends.com/cdn/10.15.1/data/en_US/champion.json');		
+
+							const res = await data.json();
+							let championList = res.data;
+
+							for (var i in championList) {
+
+								if (championList[i].key == id) {
+									manyValues["mostPlayedChampion"] = championList[i].id;
+								}
+							}
+//							console.log(res);
+						}
+
+
+						manyValues["summonerName"] = summonerName;
 						manyValues["kills"] = arrSum(killsArray);
-						manyValues["assists"] = arrSum(AssistsArray);
-						manyValues["deaths"] = arrSum(DeathsArray);
+						manyValues["assists"] = arrSum(assistsArray);
+						manyValues["deaths"] = arrSum(deathsArray);
+
+						manyValues["averageKills"] = averageKills.toFixed(1);
+						manyValues["averageAssists"] = averageAssists.toFixed(1);
+						manyValues["averageDeaths"] = averageDeaths.toFixed(1);
+
 						manyValues["doubleKills"] = arrSum(doubleKillsArray);
 						manyValues["tripleKill"] = arrSum(tripleKillsArray);
 						manyValues["quadraKills"] = arrSum(quadraKillsArray);
@@ -266,9 +335,17 @@ app.get('/', (req, res) => {
 						manyValues["timePlayed"] = formattedTime;
 						manyValues["winP"] = winPercentage;
 
-						console.log("MV", manyValues);	
+							
 
-						res.render('index', {manyValues: manyValues })
+						async function renderPage() {
+							await getMostPlayedChampionName(championIdMostPlayed);
+							console.log("MV", manyValues);
+							res.render('index', {manyValues: manyValues })
+						}				
+
+						renderPage();
+
+
 					}
 
 				})
