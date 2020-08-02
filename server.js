@@ -15,8 +15,128 @@ app.use(express.static(__dirname + '/public'));
 // routes
 app.get('/', (req, res) => {
 
+
+	
+//	//
+//	
+//	// pass in two arrays
+//	function getWinPercentage(infoTeams, infoParticipantIdentities) {
+//
+//		// GET WIN PERCENTAGE
+//		// return if the game was win or lost
+//		function gameResult() {
+//
+//			let resultToReturn;
+//
+//			// info.teams comes from the callbackGetOneMatch
+//			// makes the request to getonematch 
+//			// we have each roles matches saved in an array so make a new getOneMatch function and loop it like the getonematch we have
+//			// do this for the 5 roles
+//			// this will allow us to pull all the data we need for each role
+//			// this will all happen outside this function and we will call this function inside the new getOneMatch
+//			// then within getOneMatch we will add all our data to a new array such as manyValuesJungle, manyValuesMid... ect
+//			
+//			// Get winner id so i can check if the player was on this team
+////			info.teams.find(element => {
+//			infoTeams.find(element => {
+//				if(element.win === "Win") {
+//					winnerId = element.teamId;
+//				}
+//			})	
+//
+//			let summonerTeam;
+//			// find what team the player was on
+//			// to compair with winingTeam Id to see if this game was a win
+////			info.participantIdentities.find(element => {
+//			infoParticipantIdentities.find(element => {
+//
+//				if(element.player.summonerName === summonerName) {
+//
+//					participantId = element.participantId;					
+//
+//					if(element.participantId <= 5) {
+//						summonerTeam = 100
+//					} else {
+//						summonerTeam = 200
+//					}
+//
+//					if (winnerId === summonerTeam) {
+//						//							console.log("Player Win");							
+//						resultToReturn = "Win"
+//					} else {
+//						//							console.log("Player Lost");							
+//						resultToReturn = "Loss"
+//					}
+//				}			
+//
+//			});		
+//			
+//			// dont need winnerid or summonerteam
+//			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
+//			return resultToReturn;
+//		}
+//
+//		gameResult().then(result => {
+//
+//			let gamesWinCounter = 0;
+//
+//			if(winLoseArray.length === matchCount) {				
+//
+//				var gameCounter = 0;
+//				winLoseArray.forEach(element => {
+//					if(element.resultToReturn === "Win") {
+//						gamesWinCounter++	
+//						counter++;
+//					} else {
+//						counter++;
+//					}
+//					if(gameCounter === winLoseArray.length) {
+//
+//						winPercentage = gamesWinCounter / winLoseArray.length;
+//						winPercentage = winPercentage * 100;
+//						winPercentage = winPercentage.toFixed(0);
+//
+//						// return winPercentage to top level
+//						
+//						
+//						
+//						// END GET WIN PERCENTAGE
+//
+//					}
+//				})
+//
+//			}
+//
+//		})
+//
+//
+//
+//
+//	}
+//	
+//	let jungleWinPercentage = 0;
+//	
+//	// will use this like          -  pass in jungle games data
+//	jungleWinPercentage = getWinPercentage(infoTeams, infoParticipantIdentities)
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
+
 	const apiKey = apikey;
-	let accountName = "hazouzo";
+	let accountName = "sudofo";
+	//	let accountName = "hide on bush";
 	//	let accountId = 'wz3GXIlG2798lfGWUFPzhj7wlfBxF9J2QqTJhwPDmz0NTqQ';
 	let accountId;
 	let id;
@@ -27,7 +147,8 @@ app.get('/', (req, res) => {
 	let matchInfo;
 
 	let zoneCode = "euw1";
-	
+	//	let zoneCode = "kr";
+
 	let totalGames;
 
 	let teamId;
@@ -47,13 +168,23 @@ app.get('/', (req, res) => {
 	let quadraKillsArray = [];
 	let pentaKillsArray = [];
 
+	let positionRole; 
+	let positionLane;
+
+	let topMatches = [];
+	let jungleMatches = [];
+	let midMatches = [];
+	let adcMatches = [];
+	let supportMatches = [];
+	let duoNoneMatches = [];
+
 
 	let todaysDateFormated = new Date().toLocaleDateString('en-GB', {
 		month: '2-digit',day: '2-digit',year: '2-digit'})
 	let Days7AgoFormated = new Date(Date.now() - 7*24*60*60*1000).toLocaleDateString('en-GB', {
 		month: '2-digit',day: '2-digit',year: '2-digit'})
 
-	let winArray = [];
+	let winLoseArray = [];
 	let dateNow = Date.now();
 	let unix7daysAgo = Date.now() - 7*24*60*60*1000;
 
@@ -71,6 +202,7 @@ app.get('/', (req, res) => {
 
 
 	let winPercentage = 0;
+	
 
 	function callbackGetName(error, response, body) {
 		if (!error && response.statusCode == 200) {
@@ -81,8 +213,9 @@ app.get('/', (req, res) => {
 			summonerName = info.name;
 
 			let optionsGetMatches = {
-				url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?beginTime=${unix7daysAgo}&api_key=${apiKey}`		
+				url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
 			};
+
 
 			let optionsGetRanks = {
 				url: `https://${zoneCode}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${apiKey}`
@@ -125,38 +258,49 @@ app.get('/', (req, res) => {
 			manyValues["totalGames"] = info.totalGames;
 
 
-
-
-
-			var array = ['some', 'array', 'containing', 'words'];
 			var interval = 60; // how much time should the delay between two iterations be (in milliseconds)?
 			var promise = Promise.resolve();
 
 
-
-			//			array.forEach(function (el) {
-			//				promise = promise.then(function () {
-			//					console.log(el);
-			//					return new Promise(function (resolve) {
-			//						setTimeout(resolve, interval);
-			//					});
-			//				});
-			//			});
-			//
-			//			promise.then(function () {
-			//				console.log('Loop finished.');
-			//			});
-
-
-
+			//			queueId: 420 = Ranked Solo
+			//			queueId: 440 = Ranked Flex
 
 			// FOR EACH MATCH GET IF IT WAS WIN OR LOST
 			info.matches.forEach(element => {	
-				promise = promise.then(function () {
+				promise = promise.then(function () {				
 
 					matchInfo = info.matches[matchCount];
 					gameId = info.matches[matchCount].gameId;
 					championIdArray.push(element.champion);
+
+					positionRole = element.role;
+					positionLane = element.lane;
+
+					
+					if(positionLane === "TOP") {
+						topMatches.push(element);
+					}
+
+					if(positionLane === "MID") {
+						midMatches.push(element);
+					}
+
+					if(positionLane === "JUNGLE") {
+						jungleMatches.push(element);
+					}
+
+					if(positionLane === "BOTTOM" && positionRole === "DUO_CARRY") {
+						adcMatches.push(element);
+					}
+
+					if(positionRole === "DUO" && positionLane === "NONE") {
+						duoNoneMatches.push(element);
+					}
+
+					if(positionRole === "DUO_SUPPORT") {
+						supportMatches.push(element);
+					}
+
 
 					let optionsGetOneMatch = {
 						url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
@@ -165,6 +309,7 @@ app.get('/', (req, res) => {
 					request(optionsGetOneMatch, callbackGetOneMatch);
 
 					matchCount++;	
+
 
 					return new Promise(function (resolve) {
 						setTimeout(resolve, interval);
@@ -211,7 +356,7 @@ app.get('/', (req, res) => {
 					if(element.timeline.creepsPerMinDeltas){
 						creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey])
 					} else {
-						console.log("ERROR", element.timeline);
+						console.log("ERROR creeps", element.timeline);
 					}
 
 				}
@@ -219,7 +364,10 @@ app.get('/', (req, res) => {
 
 
 			gameDurationArray.push(info.gameDuration);
+			console.log("GD", gameDurationArray)
 
+
+			// GET WIN PERCENTAGE
 			// return if the game was win or lost
 			function gameResult() {
 
@@ -247,7 +395,6 @@ app.get('/', (req, res) => {
 							summonerTeam = 200
 						}
 
-						//						console.log("Win Id", winnerId , "Team id", summonerTeam)
 
 						if (winnerId === summonerTeam) {
 							//							console.log("Player Win");							
@@ -260,33 +407,38 @@ app.get('/', (req, res) => {
 
 				});		
 
-				winArray.push({resultToReturn, winnerId, summonerTeam});
+				winLoseArray.push({resultToReturn, winnerId, summonerTeam});
 				return resultToReturn;
 			}
 
 			gameResult()
-			//			console.log( winArray );
 
 
-			let counter = 0;
-			if(winArray.length === matchCount) {				
+			let gamesWinCounter = 0;
 
-				var counter2 = 0;
-				winArray.forEach(element => {
+			if(winLoseArray.length === matchCount) {				
+
+				var gameCounter = 0;
+				winLoseArray.forEach(element => {
 					if(element.resultToReturn === "Win") {
-						counter++	
-						counter2++;
+						gamesWinCounter++	
+						gameCounter++;
 					} else {
-						counter2++;
-
+						gameCounter++;
 					}
-					if(counter2 === winArray.length) {
+					if(gameCounter === winLoseArray.length) {
 
-						winPercentage = counter / winArray.length;
+						winPercentage = gamesWinCounter / winLoseArray.length;
 						winPercentage = winPercentage * 100;
 						winPercentage = winPercentage.toFixed(0);
 
-						gameDurationArray
+						// END GET WIN PERCENTAGE
+
+
+
+
+
+						// function to sum values in array
 						const arrSum = arr => arr.reduce((a,b) => a + b, 0)
 
 
@@ -321,7 +473,7 @@ app.get('/', (req, res) => {
 						}, {});
 						let maxCount = Math.max(...Object.values(counts));
 						let mostFrequent = Object.keys(counts).filter(k => counts[k] === maxCount);
-					
+
 						var championIdMostPlayed = mostFrequent[0];
 
 						// needed to be async so that the champion name value got saved before the page rendered
@@ -356,9 +508,25 @@ app.get('/', (req, res) => {
 						manyValues["quadraKills"] = arrSum(quadraKillsArray);
 						manyValues["pentaKills"] = arrSum(pentaKillsArray);		
 
-					
+
 						manyValues["todaysDateFormated"] = todaysDateFormated;					
 						manyValues["Days7AgoFormated"] = Days7AgoFormated;					
+
+
+
+
+
+						console.log("topMatches", topMatches.length)
+						console.log("jungleMatches", jungleMatches.length)
+						console.log("midMatches", midMatches.length)
+						console.log("adcMatches", adcMatches.length)
+						console.log("supportMatches", supportMatches.length)
+						console.log("duoNoneMatches", duoNoneMatches.length)
+
+
+
+
+
 
 
 						let creepScoreAverage = arrSum(creepScoreArray) / creepScoreArray.length;	
@@ -366,15 +534,23 @@ app.get('/', (req, res) => {
 						manyValues["creepScore010"] = creepScoreAverage;
 
 
+						var gameDurationSum = arrSum(gameDurationArray) * 1000;
 
-						// format unix time
-						var date = new Date(arrSum(gameDurationArray) * 1000);
-						var hours = date.getHours();
-						var minutes = "0" + date.getMinutes();
-						var formattedTime = hours + 'h ' + minutes.substr(-2)+ 'min';
+						function msToTime(duration) {
+							var milliseconds = parseInt((duration % 1000) / 100),
+								minutes = Math.floor((duration / (1000 * 60)) % 60),
+								hours = Math.floor((duration / (1000 * 60 * 60)));
+
+							//							hours = (hours < 10) ? "0" + hours : hours;
+							//							minutes = (minutes < 10) ? "0" + minutes : minutes;
+
+							return hours + "h " + minutes + "min";
+						}
+
+						console.log(msToTime(gameDurationSum))
 
 
-						manyValues["timePlayed"] = formattedTime;
+						manyValues["timePlayed"] = msToTime(gameDurationSum);
 						manyValues["winP"] = winPercentage;
 
 
