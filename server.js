@@ -1,5 +1,5 @@
 const express = require('express');
-const request = require('request');
+const request = require("request-promise");
 const fetch = require('node-fetch');
 const app = express();
 const ejs = require('ejs');
@@ -16,113 +16,154 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', (req, res) => {
 
 
-	
-//	//
-//	
-//	// pass in two arrays
-//	function getWinPercentage(infoTeams, infoParticipantIdentities) {
-//
-//		// GET WIN PERCENTAGE
-//		// return if the game was win or lost
-//		function gameResult() {
-//
-//			let resultToReturn;
-//
-//			// info.teams comes from the callbackGetOneMatch
-//			// makes the request to getonematch 
-//			// we have each roles matches saved in an array so make a new getOneMatch function and loop it like the getonematch we have
-//			// do this for the 5 roles
-//			// this will allow us to pull all the data we need for each role
-//			// this will all happen outside this function and we will call this function inside the new getOneMatch
-//			// then within getOneMatch we will add all our data to a new array such as manyValuesJungle, manyValuesMid... ect
-//			
-//			// Get winner id so i can check if the player was on this team
-////			info.teams.find(element => {
-//			infoTeams.find(element => {
-//				if(element.win === "Win") {
-//					winnerId = element.teamId;
-//				}
-//			})	
-//
-//			let summonerTeam;
-//			// find what team the player was on
-//			// to compair with winingTeam Id to see if this game was a win
-////			info.participantIdentities.find(element => {
-//			infoParticipantIdentities.find(element => {
-//
-//				if(element.player.summonerName === summonerName) {
-//
-//					participantId = element.participantId;					
-//
-//					if(element.participantId <= 5) {
-//						summonerTeam = 100
-//					} else {
-//						summonerTeam = 200
-//					}
-//
-//					if (winnerId === summonerTeam) {
-//						//							console.log("Player Win");							
-//						resultToReturn = "Win"
-//					} else {
-//						//							console.log("Player Lost");							
-//						resultToReturn = "Loss"
-//					}
-//				}			
-//
-//			});		
-//			
-//			// dont need winnerid or summonerteam
-//			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
-//			return resultToReturn;
-//		}
-//
-//		gameResult().then(result => {
-//
-//			let gamesWinCounter = 0;
-//
-//			if(winLoseArray.length === matchCount) {				
-//
-//				var gameCounter = 0;
-//				winLoseArray.forEach(element => {
-//					if(element.resultToReturn === "Win") {
-//						gamesWinCounter++	
-//						counter++;
-//					} else {
-//						counter++;
-//					}
-//					if(gameCounter === winLoseArray.length) {
-//
-//						winPercentage = gamesWinCounter / winLoseArray.length;
-//						winPercentage = winPercentage * 100;
-//						winPercentage = winPercentage.toFixed(0);
-//
-//						// return winPercentage to top level
-//						
-//						
-//						
-//						// END GET WIN PERCENTAGE
-//
-//					}
-//				})
-//
-//			}
-//
-//		})
-//
-//
-//
-//
-//	}
-//	
-//	let jungleWinPercentage = 0;
-//	
-//	// will use this like          -  pass in jungle games data
-//	jungleWinPercentage = getWinPercentage(infoTeams, infoParticipantIdentities)
-//
-//
-//
-//
-//
+	var allDataLoadedTrueFalse = false;	
+	var midDataLoadedTrueFalse = false;	
+
+	var getOneMatchAllDataDone = false;
+	var getOneMatchMidDataDone = false;
+	var winLoseArrayAllDone = false;
+	var winLoseArrayMidDone = false;
+
+
+	// UNSORTED FUNCTIONS
+
+
+	// Populates wonLoseArray used to calculate wining percentage
+	function gameResults(infoTeams, infoParticipantIdentities, position) {
+
+		let resultToReturn;
+
+		console.log("INSIDE GAMERESULTS START")
+		// Get winner id so i can check if the player was on this team
+		infoTeams.find(element => {
+			if(element.win === "Win") {
+				winnerId = element.teamId;				
+			} 			
+			//			console.log("WINNNNNNNER                teamID", element.teamId)
+			//			console.log("WINNNNNNNER                WIN or LOSS", element.win)
+			//			console.log("WINNNNNNNER                WIN", winnerId)
+		})	
+
+
+
+		let summonerTeam;
+		// find what team the player was on
+		// to compair with winingTeam Id to see if this game was a win
+		infoParticipantIdentities.find(element => {
+
+			if(element.player.summonerName === summonerName) {
+
+				participantId = element.participantId;					
+
+				if(element.participantId <= 5) {
+					summonerTeam = 100
+				} else {
+					summonerTeam = 200
+				}
+
+				console.log("summonerTeam", summonerTeam)
+
+				if (winnerId === summonerTeam) {
+					//							console.log("Player Win");							
+					resultToReturn = "Win"
+				} else {
+					//							console.log("Player Lost");							
+					resultToReturn = "Loss"
+				}
+			}	
+		});		
+
+		if(position === "MID") {
+			winLoseArrayMid.push({resultToReturn, winnerId, summonerTeam});
+		} 
+		if(position === "ALL") {
+			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
+		}
+
+		//		console.log("GAMES RESULTS", winLoseArrayMid)
+		//		console.log("GAMES RESULTS", winLoseArray)
+		console.log("INSIDE GAMERESULTS END")
+
+		if(winLoseArray.length === totalGames) {
+			console.log("WINLOSEA    RRAY ALL FI   NS         I       SHE D")
+			winLoseArrayAllDone = true;
+			checkValue();
+		} else {
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO")
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO", totalGames, winLoseArray.length)
+		}
+
+
+		if(winLoseArrayMid.length === midMatches.length) {
+			console.log("WINLOSEA    RRAY ALL FI   NS         I       SHE D 222")
+			winLoseArrayMidDone = true;
+			checkValue2();
+		} else {
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO 222")
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222", midMatches.length, winLoseArrayMid.length)
+			console.log("midMatches", midMatches.length)
+		}	
+
+		return resultToReturn;
+
+	}
+
+
+
+	// gets the champion name
+	// needed to be async so that the champion name value got saved before the page rendered
+	async function getMostPlayedChampionName(id) {
+		console.log("getMostPlayedChampionName");
+		// API call to leauges champion db
+		let data = await fetch('http://ddragon.leagueoflegends.com/cdn/10.15.1/data/en_US/champion.json');		
+
+		const res = await data.json();
+		let championList = res.data;
+
+		console.log(id);
+		for (var i in championList) {
+
+			if (championList[i].key == id) {
+				manyValues["mostPlayedChampion"] = championList[i].id;
+			}
+		}
+	}
+
+
+
+	// return most played champion id, result will be used in getMostPlayedChampionName
+	function getMostPlayedChampionId(array) {
+		console.log("getMostPlayedChampionId");
+		let counts = array.reduce((a, c) => {
+			a[c] = (a[c] || 0) + 1;
+			return a;
+		}, {});
+		let maxCount = Math.max(...Object.values(counts));
+		let mostFrequent = Object.keys(counts).filter(k => counts[k] === maxCount);
+
+		return mostFrequent[0];
+
+	}
+
+
+
+	// return readable hours and mins from millieconds
+	function msToTime(duration) {
+		var milliseconds = parseInt((duration % 1000) / 100),
+			minutes = Math.floor((duration / (1000 * 60)) % 60),
+			hours = Math.floor((duration / (1000 * 60 * 60)));
+
+		//							hours = (hours < 10) ? "0" + hours : hours;
+		//							minutes = (minutes < 10) ? "0" + minutes : minutes;
+
+		return hours + "h " + minutes + "min";
+	}
+
+
+
+
+	// function to sum values in an array
+	const arrSum = arr => arr.reduce((a,b) => a + b, 0)
 
 
 
@@ -134,10 +175,426 @@ app.get('/', (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+	let killsArrayMid = [];
+	let deathsArrayMid = [];
+	let assistsArrayMid = [];
+	let totalDamageDealtToChampionsArrayMid = [];
+	let creepScoreArrayMid = [];
+	let gameDurationArrayMid = [];
+
+	let winLoseArrayMid = [];
+	let championIdArrayMid = [];
+
+
+	let info = "";
+
+	var positionMod = "";
+
+	// POPULATES
+	// calls getonematchNEW
+	// killsArray, assistsArray, deathsArray, gameDurationArray
+	async function getPositionValues(position) {
+
+		console.log("START GET POSITION VALUES");
+		async function callbackGetOneMatchNew(error, response, body) {
+			if (!error && response.statusCode == 200) {
+				let info = JSON.parse(body);
+
+				//			experementCount++;
+
+				// this does not get triggered
+				if(position === "MID") {
+					gameDurationArrayMid.push(info.gameDuration);
+				}
+
+				if(position === "ALL") {
+					gameDurationArray.push(info.gameDuration);
+				}
+
+				info.participantIdentities.find(element => {
+					if(element.player.summonerName === summonerName) {
+						participantId = element.participantId;	
+					}
+				});
+
+
+				// Get kills deaths assists
+				info.participants.find(element => {
+					if(element.participantId === participantId) {
+
+						console.log("position", position)
+
+						if(position === "MID") {
+							killsArrayMid.push(element.stats.kills);
+							deathsArrayMid.concat(positionMod).push(element.stats.deaths);
+							assistsArrayMid.concat(positionMod).push(element.stats.assists);						totalDamageDealtToChampionsArrayMid.concat(positionMod).push(element.stats.totalDamageDealtToChampions);
+						}
+
+						if(position === "ALL") {
+							killsArray.push(element.stats.kills);
+							deathsArray.push(element.stats.deaths);
+							assistsArray.push(element.stats.assists);
+							totalDamageDealtToChampionsArray.push(element.stats.totalDamageDealtToChampions);
+
+							doubleKillsArray.push(element.stats.doubleKills)
+							tripleKillsArray.push(element.stats.tripleKills)
+							quadraKillsArray.push(element.stats.quadraKills)
+							pentaKillsArray.push(element.stats.pentaKills)
+						}
+
+						var objKey = "0-10";
+
+						if(element.timeline.creepsPerMinDeltas){
+
+							if(position === "MID") {
+								creepScoreArrayMid.push(element.timeline.creepsPerMinDeltas[objKey]);
+							}
+							if(position === "ALL") {
+								creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey]);
+							}
+
+						} else {
+							console.log("ERROR creeps", element.timeline);
+						}
+
+						if(position === "ALL") {
+							if(totalGames === killsArray.length){
+
+								//									console.log("GET ONE MATCH ALL DATA DONE")								
+								//									console.log("CALLLLLLLLLLLL    LLLLLL   LLLLLLLLLLLLLLLLLLLLLLLL")
+
+
+								getOneMatchAllDataDone = true;
+								checkValue();
+							}
+						}
+
+
+						if(position === "MID") {
+							if(totalGames === killsArrayMid.length){	
+
+								console.log("YO BITA BOIIIIIII ")
+								console.log("CALLLLLLLLLLLL    LLLLLL   LLLLLLLLLLLLLLLLLLLLLLLL 22222")
+
+								getOneMatchMidDataDone = true;
+								checkValue2();
+
+
+
+
+							}
+						}
+
+
+
+
+						console.log("KAM", killsArrayMid)
+						console.log("GDA", gameDurationArrayMid)
+						console.log("KA", killsArray);
+						console.log("Total Games", totalGames);
+					}	
+
+				});	
+
+				// populate WinLoseArray
+				gameResults(info.teams, info.participantIdentities, position)	
+			}
+		}
+
+
+		if(position === "MID") {
+			position = "MID";
+			positionMod = "Mid";
+			info = midMatches;
+			//			console.log("MiDMATCHES", midMatches)
+			//			console.log("pos", position)
+		}
+
+		if(position === "ALL") {
+			position = "ALL";
+			positionMod = "All";
+			info = allMatches;
+			//			console.log("MiDMATCHES", midMatches)
+			//			console.log("pos", position)
+		}
+
+		matchCount2 = 0;
+
+		totalGames = info.length;
+		//	manyValues["totalGames"] = info.totalGames;		
+		console.log("TG", totalGames)
+
+		var interval = 60; // how much time should the delay between two iterations be (in milliseconds)?
+		var promise = Promise.resolve();
+
+		//		console.log("INFO", info)
+
+		info.forEach(element => {
+
+			promise = promise.then(function () {				
+				//				console.log("Match Count rb", matchCount);
+				//				console.log("info", info)			
+				//				console.log("info each", info[matchCount])			
+
+				matchInfo = info[matchCount2];
+				gameId = info[matchCount2].gameId;
+
+				if (position === "MID") {
+					championIdArrayMid.push(element.champion);
+				}
+				if (position === "ALL") {
+					championIdArray.push(element.champion);
+				}
+
+				let optionsGetOneMatch = {
+					url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
+				};			
+
+
+				async function callFunction() {
+					console.log("START  INSIDE GETPOSITIONVALUE")					
+					request(optionsGetOneMatch, callbackGetOneMatchNew);
+					console.log("END INSIDE GETPOSITIONVALUE")
+					matchCount2++;
+
+
+					if(matchCount2 === totalGames) {
+						console.log("TOTAL REACHED DO THE THING NOW")
+
+						// might be rubbish
+						if(position === "ALL") {
+							allDataLoadedTrueFalse = true;
+						}					
+
+						if(position === "MID") {
+							midDataLoadedTrueFalse = true;
+						}
+
+
+					}
+
+				}
+
+				callFunction();
+				console.log("Match Count2", matchCount2);
+
+				return new Promise(function (resolve) {
+					setTimeout(resolve, interval);
+				});
+			})
+		})
+
+		let jesusVar = "jesus";
+		console.log("ENDING GET POSITION VALUES");
+		return jesusVar;
+	}
+
+
+
+
+
+
+
+
+	async function finaliseData() {
+
+
+		// ALL DATA SHOULD BE LOADED WHEN THIS FUCNTION IS CALLED
+
+		function getWinPercentageAll() {
+			let gamesWinCounter = 0;
+			var gameCounter = 0;
+
+			console.log("start win P")
+			console.log(winLoseArray)
+			winLoseArray.forEach(element => {
+				if(element.resultToReturn === "Win") {
+					gamesWinCounter++	
+					gameCounter++;
+				} else {
+					gameCounter++;
+				}
+			})
+
+			// used to make sure all games were loaded in the array
+			if(gameCounter === winLoseArray.length) {
+				console.log(gamesWinCounter)
+				console.log(winLoseArray.length)
+				winPercentage = gamesWinCounter / winLoseArray.length;
+				winPercentage = winPercentage * 100;
+				winPercentage = winPercentage.toFixed(0);
+				manyValues["winP"] = winPercentage;
+				console.log("END win P", winPercentage)
+			}
+		}
+
+
+		function getWinPercentageMid() {
+			let gamesWinCounter = 0;
+			var gameCounter = 0;
+
+			console.log("WIN LOSE MIDDDDDDDDDDDDDDDDDDDDDDDDDDDD", winLoseArrayMid);
+			
+			winLoseArrayMid.forEach(element => {
+				if(element.resultToReturn === "Win") {
+					gamesWinCounter++	
+					gameCounter++;
+				} else {
+					gameCounter++;
+				}
+			})
+			
+			console.log("COUNTRRD ADOIH    COUNTERS", gamesWinCounter, gameCounter)
+
+			// used to make sure all games were loaded in the array
+			if(gameCounter === winLoseArrayMid.length) {
+				winPercentageMid = gamesWinCounter / winLoseArrayMid.length;
+				winPercentageMid = winPercentageMid * 100;
+				winPercentageMid = winPercentageMid.toFixed(0);
+				manyValuesMid["winP"] = winPercentageMid;
+			}
+		}
+
+		getWinPercentageAll()		
+		getWinPercentageMid()
+
+
+
+		// END GET WIN PERCENTAGE
+
+
+		// KDA VALUES
+		//	let averageKda;
+		let averageKills;
+		let averageAssists;
+		let averageDeaths;
+
+
+		averageKills = arrSum(killsArray)/ manyValues["totalGames"];
+		averageAssists = arrSum(assistsArray)/ manyValues["totalGames"];
+		averageDeaths = arrSum(deathsArray)/ manyValues["totalGames"];
+
+		//	averageKda = (arrSum(killsArray) + arrSum(assistsArray))/ arrSum(deathsArray);
+
+		KDAaverage = (killsArray + assistsArray) / deathsArray;
+
+		manyValues["kills"] = arrSum(killsArray);
+		manyValues["assists"] = arrSum(assistsArray);
+		manyValues["deaths"] = arrSum(deathsArray);
+		manyValues["averageKills"] = averageKills.toFixed(1);
+		manyValues["averageAssists"] = averageAssists.toFixed(1);
+		manyValues["averageDeaths"] = averageDeaths.toFixed(1);
+
+		manyValues["KDAaverage"] = averageDeaths.toFixed(2);
+
+		manyValues["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArray);
+
+		manyValues["doubleKills"] = arrSum(doubleKillsArray);
+		manyValues["tripleKill"] = arrSum(tripleKillsArray);
+		manyValues["quadraKills"] = arrSum(quadraKillsArray);
+		manyValues["pentaKills"] = arrSum(pentaKillsArray);	
+
+		manyValues["summonerName"] = summonerName;
+		manyValues["todaysDateFormated"] = todaysDateFormated;					
+		manyValues["Days7AgoFormated"] = Days7AgoFormated;	
+		
+		
+		
+		manyValuesMid["kills"] =  arrSum(killsArrayMid);
+		
+		
+		
+		
+		
+		
+		
+
+		let creepScoreAverage = arrSum(creepScoreArray) / creepScoreArray.length * 10;	
+		creepScoreAverage = creepScoreAverage.toFixed(0);
+		manyValues["creepScore010"] = creepScoreAverage;
+
+		var gameDurationSum = arrSum(gameDurationArray) * 1000;						
+		manyValues["timePlayed"] = msToTime(gameDurationSum);
+
+		var championIdMostPlayed = getMostPlayedChampionId(championIdArray); 
+
+
+		console.log("IIIIIIIIIIIIII GOT HERE 10");
+		await getMostPlayedChampionName(championIdMostPlayed);
+		console.log("Loaded champions");
+
+		console.log(manyValues)
+		console.log(manyValues)
+
+
+
+
+		//		async function renderPage() {
+		//			
+		//			//	await getPositionValues("MID");
+		//
+		//			res.render('index', {manyValues: manyValues })
+		//		}		
+		//
+		//		renderPage();
+
+
+		// used to render page once all data had been loaded
+		//		if(experementCount === totalGames) {
+		//			renderPage();
+		//		}
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	var position = "def";
 	const apiKey = apikey;
+	//	let accountName = "Top%209th%20Sup%20LFL2";
 	let accountName = "sudofo";
 	//	let accountName = "hide on bush";
-	//	let accountId = 'wz3GXIlG2798lfGWUFPzhj7wlfBxF9J2QqTJhwPDmz0NTqQ';
 	let accountId;
 	let id;
 	let participantId;
@@ -168,8 +625,12 @@ app.get('/', (req, res) => {
 	let quadraKillsArray = [];
 	let pentaKillsArray = [];
 
+	let totalDamageDealtToChampionsArray = [];
+
 	let positionRole; 
 	let positionLane;
+
+	let KDAaverage;
 
 	let topMatches = [];
 	let jungleMatches = [];
@@ -187,6 +648,7 @@ app.get('/', (req, res) => {
 	let winLoseArray = [];
 	let dateNow = Date.now();
 	let unix7daysAgo = Date.now() - 7*24*60*60*1000;
+	//	let unix2daysAgo = Date.now() - 2*24*60*60*1000;
 
 	let championIdArray = [];
 
@@ -194,42 +656,159 @@ app.get('/', (req, res) => {
 
 	// winP, gamesPlayed, 
 	let manyValues = {};
+	let manyValuesMid = {};
 
+
+	//	let optionsGetName = {
+	//		url: `https://${zoneCode}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${accountName}?api_key=${apiKey}`
+	//	};
+
+	//	optionsGetName = `https://${zoneCode}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${accountName}?api_key=${apiKey}`;
 
 	let optionsGetName = {
-		url: `https://${zoneCode}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${accountName}?api_key=${apiKey}`
+		url:  `https://${zoneCode}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${accountName}?api_key=${apiKey}`
+	}
+
+
+	let optionsGetMatches = {
+		url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
+	};
+
+	let optionsGetRanks = {
+		url: `https://${zoneCode}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${apiKey}`
 	};
 
 
+
+
 	let winPercentage = 0;
-	
 
-	function callbackGetName(error, response, body) {
+
+
+
+
+
+	// This runs first
+	// gets accounId and uses it to calls getMatches and ranks
+	async function callbackGetName(error, response, body) {
 		if (!error && response.statusCode == 200) {
-			let info = JSON.parse(body);
 
+			let info = JSON.parse(body);
 			accountId = info.accountId;
 			id = info.id;
 			summonerName = info.name;
 
-			let optionsGetMatches = {
+			optionsGetMatches = {
 				url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
 			};
 
-
-			let optionsGetRanks = {
+			optionsGetRanks = {
 				url: `https://${zoneCode}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${apiKey}`
 			};
 
-			request(optionsGetMatches, callbackGetMatches);
-			request(optionsGetRanks, callbackGetRanks);
+			//			request(optionsGetMatches, callbackGetMatches);
+			//			request(optionsGetRanks, callbackGetRanks);
+
+
+			console.log("CALLBACK GET NAMES")
 
 		} else {
 			console.log("error 1", error, body)
 		}
 	}	
 
-	function callbackGetRanks(error, response, body) {
+
+
+	async function getSummonerNameId() {
+		let response = await fetch(optionsGetName)
+		let data = await response.json()
+
+		console.log("CALLBACK GET NAMES NEWNEWNEWNEWNEWNEWNEWNEW")
+
+		let info = JSON.parse(data);
+		accountId = info.accountId;
+		id = info.id;
+		summonerName = info.name;
+
+		optionsGetMatches = {
+			url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
+		};
+
+		optionsGetRanks = {
+			url: `https://${zoneCode}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${apiKey}`
+		};
+
+		//			request(optionsGetMatches, callbackGetMatches);
+		//			request(optionsGetRanks, callbackGetRanks);
+
+	}
+
+
+
+
+
+
+
+
+
+	function checkStatus(res) {
+		if (res.ok) { // res.status >= 200 && res.status < 300
+			return res;
+		} else {
+			throw MyCustomError(res.statusText);
+		}
+	}
+
+	let optionsGetTest = {
+		url:  `https://jsonplaceholder.typicode.com/todos/2`
+	}
+
+	async function callbackGetTest(error, response, body) {
+		if (!error && response.statusCode == 200) {
+
+			let info = JSON.parse(body);
+
+			console.log("ddddddddddd", body);
+			console.log("CALLBACK GET TEST")
+
+		} else {
+			console.log("error 167", error, body)
+		}
+	}	
+
+
+
+
+
+	var zone = "jsonplaceholder"
+	var urlNew = `https://${zone}.typicode.com/todos/1`;
+
+	async function getRanksNew() {
+		let response = await fetch(urlNew)
+		let data = await response.json()
+
+		console.log(JSON.stringify(data, null, "\t"))
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	async function callbackGetRanks(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			let info = JSON.parse(body);
 
@@ -242,13 +821,15 @@ app.get('/', (req, res) => {
 
 			manyValues["RankData"] = rankArray;
 
-		}
-		else {
+			console.log("CALLBACK GET RANKS")
+		} else {
 			console.log("error 4", error, body)
 		}
 	}
 
-	function callbackGetMatches(error, response, body) {
+
+
+	async function callbackGetMatches(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			let info = JSON.parse(body);
 
@@ -257,17 +838,18 @@ app.get('/', (req, res) => {
 			totalGames = info.totalGames;
 			manyValues["totalGames"] = info.totalGames;
 
+			allMatches = info.matches;
 
 			var interval = 60; // how much time should the delay between two iterations be (in milliseconds)?
 			var promise = Promise.resolve();
 
-
 			//			queueId: 420 = Ranked Solo
 			//			queueId: 440 = Ranked Flex
 
-			// FOR EACH MATCH GET IF IT WAS WIN OR LOST
+
+
 			info.matches.forEach(element => {	
-				promise = promise.then(function () {				
+				promise = promise.then(async function () {				
 
 					matchInfo = info.matches[matchCount];
 					gameId = info.matches[matchCount].gameId;
@@ -276,7 +858,7 @@ app.get('/', (req, res) => {
 					positionRole = element.role;
 					positionLane = element.lane;
 
-					
+
 					if(positionLane === "TOP") {
 						topMatches.push(element);
 					}
@@ -306,9 +888,20 @@ app.get('/', (req, res) => {
 						url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
 					};			
 
-					request(optionsGetOneMatch, callbackGetOneMatch);
+					//	request(optionsGetOneMatch, callbackGetOneMatch);								
 
-					matchCount++;	
+					console.log("MC", matchCount)
+					console.log("TG", totalGames)
+
+					matchCount++;
+
+
+					if(matchCount === totalGames) {
+						console.log("Total games loaded");
+						getPositionValues("ALL");						
+					}
+
+
 
 
 					return new Promise(function (resolve) {
@@ -319,7 +912,7 @@ app.get('/', (req, res) => {
 				})
 			})
 
-
+			console.log("CALLBACK GET MATCHES")
 			// call 3
 
 		} else {
@@ -327,260 +920,64 @@ app.get('/', (req, res) => {
 		}
 	}		
 
-	function callbackGetOneMatch(error, response, body) {
-		if (!error && response.statusCode == 200) {
-			let info = JSON.parse(body);
 
-			experementCount++;
+	async function startEverything() {
+		await getRanksNew()		
+		await request(optionsGetTest, callbackGetTest);
+		await request(optionsGetName, callbackGetName);
+		await request(optionsGetRanks, callbackGetRanks);
 
-			info.participantIdentities.find(element => {
-				if(element.player.summonerName === summonerName) {
-					participantId = element.participantId;	
-				}
-			});
+		// calls finalise data , calls get positionValue
+		await request(optionsGetMatches, callbackGetMatches);
 
-			// Get kills deaths assists
-			info.participants.find(element => {
-				if(element.participantId === participantId) {
 
-					killsArray.push(element.stats.kills)
-					deathsArray.push(element.stats.deaths)
-					assistsArray.push(element.stats.assists)
-					doubleKillsArray.push(element.stats.doubleKills)
-					tripleKillsArray.push(element.stats.tripleKills)
-					quadraKillsArray.push(element.stats.quadraKills)
-					pentaKillsArray.push(element.stats.pentaKills)
 
-					var objKey = "0-10";
 
-					if(element.timeline.creepsPerMinDeltas){
-						creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey])
-					} else {
-						console.log("ERROR creeps", element.timeline);
-					}
+	}	
 
-				}
-			});
+	startEverything();
 
 
-			gameDurationArray.push(info.gameDuration);
-			console.log("GD", gameDurationArray)
+	async function checkValue() {
+		if(getOneMatchAllDataDone === true && winLoseArrayAllDone === true) {
+			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+			getPositionValues("MID");
 
-
-			// GET WIN PERCENTAGE
-			// return if the game was win or lost
-			function gameResult() {
-
-				let resultToReturn;
-
-				// Get winner id so i can check if the player was on this team
-				info.teams.find(element => {
-					if(element.win === "Win") {
-						winnerId = element.teamId;
-					}
-				})	
-
-				let summonerTeam;
-				// find what team the player was on
-				// to compair with winingTeam Id to see if this game was a win
-				info.participantIdentities.find(element => {
-
-					if(element.player.summonerName === summonerName) {
-
-						participantId = element.participantId;					
-
-						if(element.participantId <= 5) {
-							summonerTeam = 100
-						} else {
-							summonerTeam = 200
-						}
-
-
-						if (winnerId === summonerTeam) {
-							//							console.log("Player Win");							
-							resultToReturn = "Win"
-						} else {
-							//							console.log("Player Lost");							
-							resultToReturn = "Loss"
-						}
-					}			
-
-				});		
-
-				winLoseArray.push({resultToReturn, winnerId, summonerTeam});
-				return resultToReturn;
-			}
-
-			gameResult()
-
-
-			let gamesWinCounter = 0;
-
-			if(winLoseArray.length === matchCount) {				
-
-				var gameCounter = 0;
-				winLoseArray.forEach(element => {
-					if(element.resultToReturn === "Win") {
-						gamesWinCounter++	
-						gameCounter++;
-					} else {
-						gameCounter++;
-					}
-					if(gameCounter === winLoseArray.length) {
-
-						winPercentage = gamesWinCounter / winLoseArray.length;
-						winPercentage = winPercentage * 100;
-						winPercentage = winPercentage.toFixed(0);
-
-						// END GET WIN PERCENTAGE
-
-
-
-
-
-						// function to sum values in array
-						const arrSum = arr => arr.reduce((a,b) => a + b, 0)
-
-
-						let averageKda;
-						let averageKills;
-						let averageAssists;
-						let averageDeaths;
-
-						averageKda = (arrSum(killsArray) + arrSum(assistsArray))/ arrSum(deathsArray);
-
-						averageKills = arrSum(killsArray)/ manyValues["totalGames"];
-						averageAssists = arrSum(assistsArray)/ manyValues["totalGames"];
-						averageDeaths = arrSum(deathsArray)/ manyValues["totalGames"];
-
-						championIdArray;
-
-						function getMax(arr, prop) {
-							var max;
-							for (var i=0 ; i<arr.length ; i++) {
-								if (!max || parseInt(arr[i][prop]) > parseInt(max[prop]))
-									max = arr[i];
-							}
-							return max;
-						}
-
-
-						let arr = championIdArray;
-						// pulled from stackoverflow
-						let counts = arr.reduce((a, c) => {
-							a[c] = (a[c] || 0) + 1;
-							return a;
-						}, {});
-						let maxCount = Math.max(...Object.values(counts));
-						let mostFrequent = Object.keys(counts).filter(k => counts[k] === maxCount);
-
-						var championIdMostPlayed = mostFrequent[0];
-
-						// needed to be async so that the champion name value got saved before the page rendered
-						async function getMostPlayedChampionName(id) {
-							// API call to leauges champion db
-							let data = await fetch('http://ddragon.leagueoflegends.com/cdn/10.15.1/data/en_US/champion.json');		
-
-							const res = await data.json();
-							let championList = res.data;
-
-							for (var i in championList) {
-
-								if (championList[i].key == id) {
-									manyValues["mostPlayedChampion"] = championList[i].id;
-								}
-							}
-							//							console.log(res);
-						}
-
-
-						manyValues["summonerName"] = summonerName;
-						manyValues["kills"] = arrSum(killsArray);
-						manyValues["assists"] = arrSum(assistsArray);
-						manyValues["deaths"] = arrSum(deathsArray);
-
-						manyValues["averageKills"] = averageKills.toFixed(1);
-						manyValues["averageAssists"] = averageAssists.toFixed(1);
-						manyValues["averageDeaths"] = averageDeaths.toFixed(1);
-
-						manyValues["doubleKills"] = arrSum(doubleKillsArray);
-						manyValues["tripleKill"] = arrSum(tripleKillsArray);
-						manyValues["quadraKills"] = arrSum(quadraKillsArray);
-						manyValues["pentaKills"] = arrSum(pentaKillsArray);		
-
-
-						manyValues["todaysDateFormated"] = todaysDateFormated;					
-						manyValues["Days7AgoFormated"] = Days7AgoFormated;					
-
-
-
-
-
-						console.log("topMatches", topMatches.length)
-						console.log("jungleMatches", jungleMatches.length)
-						console.log("midMatches", midMatches.length)
-						console.log("adcMatches", adcMatches.length)
-						console.log("supportMatches", supportMatches.length)
-						console.log("duoNoneMatches", duoNoneMatches.length)
-
-
-
-
-
-
-
-						let creepScoreAverage = arrSum(creepScoreArray) / creepScoreArray.length;	
-						creepScoreAverage = creepScoreAverage.toFixed(2);
-						manyValues["creepScore010"] = creepScoreAverage;
-
-
-						var gameDurationSum = arrSum(gameDurationArray) * 1000;
-
-						function msToTime(duration) {
-							var milliseconds = parseInt((duration % 1000) / 100),
-								minutes = Math.floor((duration / (1000 * 60)) % 60),
-								hours = Math.floor((duration / (1000 * 60 * 60)));
-
-							//							hours = (hours < 10) ? "0" + hours : hours;
-							//							minutes = (minutes < 10) ? "0" + minutes : minutes;
-
-							return hours + "h " + minutes + "min";
-						}
-
-						console.log(msToTime(gameDurationSum))
-
-
-						manyValues["timePlayed"] = msToTime(gameDurationSum);
-						manyValues["winP"] = winPercentage;
-
-
-						async function renderPage() {
-							await getMostPlayedChampionName(championIdMostPlayed);
-							res.render('index', {manyValues: manyValues })
-						}				
-
-						if(experementCount === totalGames ) {
-							renderPage();
-						}
-
-
-
-					}
-
-				})
-			}		
-
-
+			//			await finaliseData();
+			//			res.render('index', {manyValues: manyValues })
 		} else {
-			console.log("error 3", error, body)
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT", getOneMatchAllDataDone, winLoseArrayAllDone)
 		}
 	}
 
-	// first call
-	request(optionsGetName, callbackGetName);
+	async function checkValue2() {
+		if(getOneMatchMidDataDone === true && winLoseArrayMidDone === true) {
+			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 222222222" );
+			//			getPositionValues("MID");
+
+			await finaliseData();
+			
+			console.log(manyValuesMid);
+			res.render('index', {manyValues: manyValues, manyValuesMid: manyValuesMid })
+		} else {
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT", getOneMatchAllDataDone, winLoseArrayAllDone)
+		}
+	}
+
+
+
+
+
+
+	// call this once every thing has loaded
+
+	// could do a line of awaits or
+
+
+
+
 
 })
-
 
 
 app.listen(port, ()=> console.log(`Listening at ${port}`));
