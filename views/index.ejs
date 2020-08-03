@@ -144,6 +144,71 @@
 			<p class="riotText">Leauge Weekly isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
 
 
+
+
+
+
+
+			<div class="row">
+				<span class="row__title">Games Played</span><span class="row__value"><%= manyValuesMid.totalGames %></span>
+			</div>
+
+			<div class="row">
+				<span class="row__title">Win Percentage</span><span class="row__value"><%= manyValuesMid.winP + "%"%></span>
+			</div>
+
+			<div class="row">
+				<span class="row__title">Most Played Champion</span><span class="row__value"><%= manyValuesMid.mostPlayedChampion %></span>
+			</div>
+
+			<div class="row">
+				<span class="row__title">KDA</span>
+				<span class="row__value">
+					<span class="row__value__kills"><%= manyValuesMid.kills %><span class="row__value__slash">/</span></span>			
+					<span class="row__value__deaths"><%= manyValuesMid.deaths%><span class="row__value__slash">/</span></span>	
+					<span class="row__value__assists"><%= manyValuesMid.assists %></span>	
+				</span>
+			</div>
+
+			<div class="row">
+				<span class="row__title">KDA Average</span>
+				<span class="row__value">
+					<span class="row__value__kills"><%= manyValuesMid.averageKills %><span class="row__value__slash">/</span></span>			
+					<span class="row__value__deaths"><%= manyValuesMid.averageDeaths%><span class="row__value__slash">/</span></span>	
+					<span class="row__value__assists"><%= manyValuesMid.averageAssists %></span>	
+				</span>
+			</div>
+
+			<div class="row">
+				<span class="row__title">KDA ratio</span>
+				<span class="row__value"><%= manyValuesMid.KDAaverage %></span>
+			</div>
+
+			<div class="row">
+				<span class="row__title">Time Played</span><span class="row__value"><%= manyValuesMid.timePlayed %></span>
+			</div>
+
+			<div class="row">
+				<span class="row__title">Average Creep Score</span>
+				<span class="row__value"><%= manyValuesMid.creepScore010 %><span class="row__value--small"> first 10min</span> </span>
+			</div>
+
+			<div class="row">
+				<span class="row__title">Damage To Champions</span>
+				<span class="row__value"><%= manyValuesMid.totalDamageDealtToChampions %></span>
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+
 			<script>
 
 				document.querySelectorAll('.rankColor').forEach(function(item) {

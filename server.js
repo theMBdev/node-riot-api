@@ -19,9 +19,9 @@ app.get('/', (req, res) => {
 	var allDataLoadedTrueFalse = false;	
 	var midDataLoadedTrueFalse = false;	
 
-	var getOneMatchAllDataDone = false;
+	var getOneMatchDataDoneAll = false;
 	var getOneMatchMidDataDone = false;
-	var winLoseArrayAllDone = false;
+	var winLoseArrayDoneAll = false;
 	var winLoseArrayMidDone = false;
 
 
@@ -73,6 +73,7 @@ app.get('/', (req, res) => {
 			}	
 		});		
 
+		
 		if(position === "MID") {
 			winLoseArrayMid.push({resultToReturn, winnerId, summonerTeam});
 		} 
@@ -86,7 +87,7 @@ app.get('/', (req, res) => {
 
 		if(winLoseArray.length === totalGames) {
 			console.log("WINLOSEA    RRAY ALL FI   NS         I       SHE D")
-			winLoseArrayAllDone = true;
+			winLoseArrayDoneAll = true;
 			checkValue();
 		} else {
 			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO")
@@ -112,7 +113,7 @@ app.get('/', (req, res) => {
 
 	// gets the champion name
 	// needed to be async so that the champion name value got saved before the page rendered
-	async function getMostPlayedChampionName(id) {
+	async function getMostPlayedChampionName(id, position) {
 		console.log("getMostPlayedChampionName");
 		// API call to leauges champion db
 		let data = await fetch('http://ddragon.leagueoflegends.com/cdn/10.15.1/data/en_US/champion.json');		
@@ -123,9 +124,18 @@ app.get('/', (req, res) => {
 		console.log(id);
 		for (var i in championList) {
 
-			if (championList[i].key == id) {
-				manyValues["mostPlayedChampion"] = championList[i].id;
+			if(position === "ALL") {
+				if (championList[i].key == id) {
+					manyValues["mostPlayedChampion"] = championList[i].id;
+				}
 			}
+
+			if(position === "MID") {
+				if (championList[i].key == id) {
+					manyValuesMid["mostPlayedChampion"] = championList[i].id;
+				}
+			}
+
 		}
 	}
 
@@ -238,8 +248,9 @@ app.get('/', (req, res) => {
 
 						if(position === "MID") {
 							killsArrayMid.push(element.stats.kills);
-							deathsArrayMid.concat(positionMod).push(element.stats.deaths);
-							assistsArrayMid.concat(positionMod).push(element.stats.assists);						totalDamageDealtToChampionsArrayMid.concat(positionMod).push(element.stats.totalDamageDealtToChampions);
+							deathsArrayMid.push(element.stats.deaths);
+							assistsArrayMid.push(element.stats.assists);	
+							totalDamageDealtToChampionsArrayMid.push(element.stats.totalDamageDealtToChampions);
 						}
 
 						if(position === "ALL") {
@@ -276,12 +287,12 @@ app.get('/', (req, res) => {
 								//									console.log("CALLLLLLLLLLLL    LLLLLL   LLLLLLLLLLLLLLLLLLLLLLLL")
 
 
-								getOneMatchAllDataDone = true;
+								getOneMatchDataDoneAll = true;
 								checkValue();
 							}
 						}
 
-
+						// COULD BE ERROR WHAT IS TOTAL GAMES HERE???????????????
 						if(position === "MID") {
 							if(totalGames === killsArrayMid.length){	
 
@@ -290,15 +301,8 @@ app.get('/', (req, res) => {
 
 								getOneMatchMidDataDone = true;
 								checkValue2();
-
-
-
-
 							}
 						}
-
-
-
 
 						console.log("KAM", killsArrayMid)
 						console.log("GDA", gameDurationArrayMid)
@@ -446,7 +450,7 @@ app.get('/', (req, res) => {
 			var gameCounter = 0;
 
 			console.log("WIN LOSE MIDDDDDDDDDDDDDDDDDDDDDDDDDDDD", winLoseArrayMid);
-			
+
 			winLoseArrayMid.forEach(element => {
 				if(element.resultToReturn === "Win") {
 					gamesWinCounter++	
@@ -455,7 +459,7 @@ app.get('/', (req, res) => {
 					gameCounter++;
 				}
 			})
-			
+
 			console.log("COUNTRRD ADOIH    COUNTERS", gamesWinCounter, gameCounter)
 
 			// used to make sure all games were loaded in the array
@@ -475,6 +479,16 @@ app.get('/', (req, res) => {
 		// END GET WIN PERCENTAGE
 
 
+		manyValues["summonerName"] = summonerName;
+		manyValues["todaysDateFormated"] = todaysDateFormated;					
+		manyValues["Days7AgoFormated"] = Days7AgoFormated;	
+
+
+		manyValues["doubleKills"] = arrSum(doubleKillsArray);
+		manyValues["tripleKill"] = arrSum(tripleKillsArray);
+		manyValues["quadraKills"] = arrSum(quadraKillsArray);
+		manyValues["pentaKills"] = arrSum(pentaKillsArray);	
+
 		// KDA VALUES
 		//	let averageKda;
 		let averageKills;
@@ -485,54 +499,57 @@ app.get('/', (req, res) => {
 		averageKills = arrSum(killsArray)/ manyValues["totalGames"];
 		averageAssists = arrSum(assistsArray)/ manyValues["totalGames"];
 		averageDeaths = arrSum(deathsArray)/ manyValues["totalGames"];
-
-		//	averageKda = (arrSum(killsArray) + arrSum(assistsArray))/ arrSum(deathsArray);
-
-		KDAaverage = (killsArray + assistsArray) / deathsArray;
-
-		manyValues["kills"] = arrSum(killsArray);
-		manyValues["assists"] = arrSum(assistsArray);
-		manyValues["deaths"] = arrSum(deathsArray);
 		manyValues["averageKills"] = averageKills.toFixed(1);
 		manyValues["averageAssists"] = averageAssists.toFixed(1);
 		manyValues["averageDeaths"] = averageDeaths.toFixed(1);
 
-		manyValues["KDAaverage"] = averageDeaths.toFixed(2);
+		// length of killsArrayMid should be total games played mid
+		manyValuesMid["averageKills"] = (arrSum(killsArrayMid)/ killsArrayMid.length).toFixed(1);
+		manyValuesMid["averageAssists"] = (arrSum(assistsArrayMid)/ killsArrayMid.length).toFixed(1);
+		manyValuesMid["averageDeaths"] = (arrSum(deathsArrayMid)/ killsArrayMid.length).toFixed(1);
+
+		//	averageKda = (arrSum(killsArray) + arrSum(assistsArray))/ arrSum(deathsArray);
+
+		manyValues["KDAaverage"] = ((arrSum(killsArray) + arrSum(assistsArray)) / arrSum(deathsArray)).toFixed(2);;
+		manyValuesMid["KDAaverage"] = ((arrSum(killsArrayMid) + arrSum(assistsArrayMid)) / arrSum(deathsArrayMid)).toFixed(2);;
+
+
 
 		manyValues["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArray);
+		manyValuesMid["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArrayMid);
 
-		manyValues["doubleKills"] = arrSum(doubleKillsArray);
-		manyValues["tripleKill"] = arrSum(tripleKillsArray);
-		manyValues["quadraKills"] = arrSum(quadraKillsArray);
-		manyValues["pentaKills"] = arrSum(pentaKillsArray);	
 
-		manyValues["summonerName"] = summonerName;
-		manyValues["todaysDateFormated"] = todaysDateFormated;					
-		manyValues["Days7AgoFormated"] = Days7AgoFormated;	
-		
-		
-		
+		manyValues["kills"] = arrSum(killsArray);
+		manyValues["assists"] = arrSum(assistsArray);
+		manyValues["deaths"] = arrSum(deathsArray);
+
 		manyValuesMid["kills"] =  arrSum(killsArrayMid);
-		
-		
-		
-		
-		
-		
+		manyValuesMid["assists"] = arrSum(assistsArrayMid);
+		manyValuesMid["deaths"] = arrSum(deathsArrayMid);
 		
 
-		let creepScoreAverage = arrSum(creepScoreArray) / creepScoreArray.length * 10;	
-		creepScoreAverage = creepScoreAverage.toFixed(0);
-		manyValues["creepScore010"] = creepScoreAverage;
+		manyValuesMid["totalGames"] = killsArrayMid.length;
 
-		var gameDurationSum = arrSum(gameDurationArray) * 1000;						
-		manyValues["timePlayed"] = msToTime(gameDurationSum);
 
-		var championIdMostPlayed = getMostPlayedChampionId(championIdArray); 
+		//		let creepScoreAverage = arrSum(creepScoreArray) / creepScoreArray.length * 10;	
+		//		creepScoreAverage = creepScoreAverage.toFixed(0);
+		manyValues["creepScore010"] = (arrSum(creepScoreArray) / creepScoreArray.length * 10).toFixed(0);
+		manyValuesMid["creepScore010"] = (arrSum(creepScoreArrayMid) / creepScoreArrayMid.length * 10).toFixed(0);
+
+
+
+
+		//		var gameDurationSum = arrSum(gameDurationArray) * 1000;						
+		manyValues["timePlayed"] = msToTime( arrSum(gameDurationArray) * 1000);
+		manyValuesMid["timePlayed"] = msToTime( arrSum(gameDurationArrayMid) * 1000);
+
+
+
 
 
 		console.log("IIIIIIIIIIIIII GOT HERE 10");
-		await getMostPlayedChampionName(championIdMostPlayed);
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArray), "ALL");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "MID");
 		console.log("Loaded champions");
 
 		console.log(manyValues)
@@ -593,7 +610,7 @@ app.get('/', (req, res) => {
 	var position = "def";
 	const apiKey = apikey;
 	//	let accountName = "Top%209th%20Sup%20LFL2";
-	let accountName = "sudofo";
+	let accountName = "dacurrymonster";
 	//	let accountName = "hide on bush";
 	let accountId;
 	let id;
@@ -617,6 +634,40 @@ app.get('/', (req, res) => {
 
 	let gameDurationArray = [];
 
+
+	let summonerDataAll = {
+		killsArray: [],
+		deathsArray: [],
+		assistsArray: [],
+		totalDamageDealtToChampionsArray: [],
+		gameDurationArray: [],
+		creepScoreArray: [],
+		winLoseArray: [],
+		totalGames: 0,		
+
+		doubleKillsArray: [],
+		tripleKillsArray: [],
+		quadraKillsArray: [],
+		pentaKillsArray: [],
+
+		getOneMatchDataDone: false,
+		winLoseArrayDone: false
+	}
+
+	let summonerDataMid = {
+		killsArray: [],
+		deathsArray: [],
+		assistsArray: [],
+		totalDamageDealtToChampionsArray: [],
+		gameDurationArray: [],
+		creepScoreArray: [],
+		winLoseArray: [],		
+
+		getOneMatchDataDone: false,
+		winLoseArrayDone: false
+	}
+
+
 	let killsArray = [];
 	let deathsArray = [];
 	let assistsArray = [];
@@ -630,7 +681,7 @@ app.get('/', (req, res) => {
 	let positionRole; 
 	let positionLane;
 
-	let KDAaverage;
+
 
 	let topMatches = [];
 	let jungleMatches = [];
@@ -939,14 +990,14 @@ app.get('/', (req, res) => {
 
 
 	async function checkValue() {
-		if(getOneMatchAllDataDone === true && winLoseArrayAllDone === true) {
+		if(getOneMatchDataDoneAll === true && winLoseArrayDoneAll === true) {
 			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 			getPositionValues("MID");
 
 			//			await finaliseData();
 			//			res.render('index', {manyValues: manyValues })
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT", getOneMatchAllDataDone, winLoseArrayAllDone)
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT", getOneMatchDataDoneAll, winLoseArrayDoneAll)
 		}
 	}
 
@@ -956,11 +1007,11 @@ app.get('/', (req, res) => {
 			//			getPositionValues("MID");
 
 			await finaliseData();
-			
+
 			console.log(manyValuesMid);
 			res.render('index', {manyValues: manyValues, manyValuesMid: manyValuesMid })
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT", getOneMatchAllDataDone, winLoseArrayAllDone)
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT", getOneMatchDataDoneAll, winLoseArrayDoneAll)
 		}
 	}
 
