@@ -89,20 +89,25 @@ app.get('/', (req, res) => {
 
 		if(position === "MID") {
 			winLoseArrayMid.push({resultToReturn, winnerId, summonerTeam});
+			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
 		} 
 		if(position === "TOP") {
 			winLoseArrayTop.push({resultToReturn, winnerId, summonerTeam});
+			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
 		} 
 
 		if(position === "JUNGLE") {
 			winLoseArrayJungle.push({resultToReturn, winnerId, summonerTeam});
+			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
 		} 
 
 		if(position === "SUPPORT") {
 			winLoseArraySupport.push({resultToReturn, winnerId, summonerTeam});
+			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
 		} 
 		if(position === "ADC") {
 			winLoseArrayAdc.push({resultToReturn, winnerId, summonerTeam});
+			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
 		} 
 
 		if(position === "ALL") {
@@ -362,8 +367,9 @@ app.get('/', (req, res) => {
 	let championIdArraySupport = [];
 
 
+	let testArrayMid = [];
 
-
+	let lane;
 
 	let info = "";
 
@@ -382,11 +388,13 @@ app.get('/', (req, res) => {
 				apiCalls++;
 				console.log("API COUNTER", apiCalls);
 
+
 				//			experementCount++;
 
 				// this does not get triggered
 				if(position === "MID") {
 					gameDurationArrayMid.push(info.gameDuration);
+					gameDurationArray.push(info.gameDuration);
 					console.log("ADDING TO GAMES ARRRAY DURATION MID", gameDurationArrayMid)
 				}
 
@@ -396,19 +404,23 @@ app.get('/', (req, res) => {
 
 				if(position === "TOP") {
 					gameDurationArrayTop.push(info.gameDuration);
+					gameDurationArray.push(info.gameDuration);
 					console.log("ADDING TO GAMES ARRRAY DURATION TOP", gameDurationArrayTop)
 				}
 
 				if(position === "JUNGLE") {
 					gameDurationArrayJungle.push(info.gameDuration);
+					gameDurationArray.push(info.gameDuration);
 				}
 
 				if(position === "SUPPORT") {
 					gameDurationArraySupport.push(info.gameDuration);
+					gameDurationArray.push(info.gameDuration);
 				}
 
 				if(position === "ADC") {
 					gameDurationArrayAdc.push(info.gameDuration);
+					gameDurationArray.push(info.gameDuration);
 					console.log("ADDING TO GAMES ARRRAY DURATION ADC", gameDurationArrayAdc)
 				}
 
@@ -431,40 +443,7 @@ app.get('/', (req, res) => {
 							deathsArrayMid.push(element.stats.deaths);
 							assistsArrayMid.push(element.stats.assists);	
 							totalDamageDealtToChampionsArrayMid.push(element.stats.totalDamageDealtToChampions);
-						}
 
-						//						console.log("ELEMENT STATS KILLS ", element.stats.kills)
-
-
-						if(position === "TOP") {
-							killsArrayTop.push(element.stats.kills);
-							deathsArrayTop.push(element.stats.deaths);
-							assistsArrayTop.push(element.stats.assists);	
-							totalDamageDealtToChampionsArrayTop.push(element.stats.totalDamageDealtToChampions);
-						}
-
-						if(position === "JUNGLE") {
-							killsArrayJungle.push(element.stats.kills);
-							deathsArrayJungle.push(element.stats.deaths);
-							assistsArrayJungle.push(element.stats.assists);	
-							totalDamageDealtToChampionsArrayTop.push(element.stats.totalDamageDealtToChampions);
-						}
-
-						if(position === "SUPPORT") {
-							killsArraySupport.push(element.stats.kills);
-							deathsArraySupport.push(element.stats.deaths);
-							assistsArraySupport.push(element.stats.assists);	
-							totalDamageDealtToChampionsArraySupport.push(element.stats.totalDamageDealtToChampions);
-						}
-
-						if(position === "ADC") {
-							killsArrayAdc.push(element.stats.kills);
-							deathsArrayAdc.push(element.stats.deaths);
-							assistsArrayAdc.push(element.stats.assists);	
-							totalDamageDealtToChampionsArrayAdc.push(element.stats.totalDamageDealtToChampions);
-						}
-
-						if(position === "ALL") {
 							killsArray.push(element.stats.kills);
 							deathsArray.push(element.stats.deaths);
 							assistsArray.push(element.stats.assists);
@@ -476,27 +455,112 @@ app.get('/', (req, res) => {
 							pentaKillsArray.push(element.stats.pentaKills)
 						}
 
+						//						console.log("ELEMENT STATS KILLS ", element.stats.kills)
+
+
+						if(position === "TOP") {
+							killsArrayTop.push(element.stats.kills);
+							deathsArrayTop.push(element.stats.deaths);
+							assistsArrayTop.push(element.stats.assists);	
+							totalDamageDealtToChampionsArrayTop.push(element.stats.totalDamageDealtToChampions);
+
+							killsArray.push(element.stats.kills);
+							deathsArray.push(element.stats.deaths);
+							assistsArray.push(element.stats.assists);
+							totalDamageDealtToChampionsArray.push(element.stats.totalDamageDealtToChampions);
+
+							doubleKillsArray.push(element.stats.doubleKills)
+							tripleKillsArray.push(element.stats.tripleKills)
+							quadraKillsArray.push(element.stats.quadraKills)
+							pentaKillsArray.push(element.stats.pentaKills)
+						}
+
+						if(position === "JUNGLE") {
+							killsArrayJungle.push(element.stats.kills);
+							deathsArrayJungle.push(element.stats.deaths);
+							assistsArrayJungle.push(element.stats.assists);	
+							totalDamageDealtToChampionsArrayTop.push(element.stats.totalDamageDealtToChampions);
+
+							killsArray.push(element.stats.kills);
+							deathsArray.push(element.stats.deaths);
+							assistsArray.push(element.stats.assists);
+							totalDamageDealtToChampionsArray.push(element.stats.totalDamageDealtToChampions);
+
+							doubleKillsArray.push(element.stats.doubleKills)
+							tripleKillsArray.push(element.stats.tripleKills)
+							quadraKillsArray.push(element.stats.quadraKills)
+							pentaKillsArray.push(element.stats.pentaKills)
+						}
+
+						if(position === "SUPPORT") {
+							killsArraySupport.push(element.stats.kills);
+							deathsArraySupport.push(element.stats.deaths);
+							assistsArraySupport.push(element.stats.assists);	
+							totalDamageDealtToChampionsArraySupport.push(element.stats.totalDamageDealtToChampions);
+
+							killsArray.push(element.stats.kills);
+							deathsArray.push(element.stats.deaths);
+							assistsArray.push(element.stats.assists);
+							totalDamageDealtToChampionsArray.push(element.stats.totalDamageDealtToChampions);
+
+							doubleKillsArray.push(element.stats.doubleKills)
+							tripleKillsArray.push(element.stats.tripleKills)
+							quadraKillsArray.push(element.stats.quadraKills)
+							pentaKillsArray.push(element.stats.pentaKills)
+						}
+
+						if(position === "ADC") {
+							killsArrayAdc.push(element.stats.kills);
+							deathsArrayAdc.push(element.stats.deaths);
+							assistsArrayAdc.push(element.stats.assists);	
+							totalDamageDealtToChampionsArrayAdc.push(element.stats.totalDamageDealtToChampions);
+
+							killsArray.push(element.stats.kills);
+							deathsArray.push(element.stats.deaths);
+							assistsArray.push(element.stats.assists);
+							totalDamageDealtToChampionsArray.push(element.stats.totalDamageDealtToChampions);
+
+							doubleKillsArray.push(element.stats.doubleKills)
+							tripleKillsArray.push(element.stats.tripleKills)
+							quadraKillsArray.push(element.stats.quadraKills)
+							pentaKillsArray.push(element.stats.pentaKills)
+						}
+
+						if(position === "ALL") {
+
+						}
+
 						var objKey = "0-10";
 
 						if(element.timeline.creepsPerMinDeltas){
 
 							if(position === "MID") {
 								creepScoreArrayMid.push(element.timeline.creepsPerMinDeltas[objKey]);
+								creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey]);
+
 							}
 							if(position === "TOP") {
 								creepScoreArrayTop.push(element.timeline.creepsPerMinDeltas[objKey]);
+								creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey]);
+
 							}
 							if(position === "ALL") {
 								creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey]);
 							}
 							if(position === "JUNGLE") {
 								creepScoreArrayJungle.push(element.timeline.creepsPerMinDeltas[objKey]);
+								creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey]);
+
 							}
 							if(position === "SUPPORT") {
 								creepScoreArraySupport.push(element.timeline.creepsPerMinDeltas[objKey]);
+								creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey]);
+
 							}
 							if(position === "ADC") {
 								creepScoreArrayAdc.push(element.timeline.creepsPerMinDeltas[objKey]);
+								creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey]);
+
 							}
 
 						} else {
@@ -514,10 +578,7 @@ app.get('/', (req, res) => {
 						//						console.log("INSIDE callbackGetOneMatchNew find participants")
 
 						if(position === "MID") {
-							//							console.log("TOTAL GAMES MID", totalGames, midMatches.length killsArrayMid.length)		
-
 							if(totalGames === killsArrayMid.length){	
-								console.log("MID FINISHED ////////// MID FINSIHED //////// MID FINSHED");
 								getOneMatchDataDoneMid = true;
 								checkValue2();
 							}
@@ -526,9 +587,6 @@ app.get('/', (req, res) => {
 						// COULD BE ERROR WHAT IS TOTAL GAMES HERE???????????????
 
 						if(position === "TOP") {
-							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS TOPPPPPPPPPPPP", totalGames, killsArrayTop.length)
-							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS topMatches.length", topMatches.length, killsArrayTop.length)
-
 							if(totalGames === killsArrayTop.length){	
 								getOneMatchDataDoneTop = true;
 								checkValue3();
@@ -536,9 +594,6 @@ app.get('/', (req, res) => {
 						}
 
 						if(position === "JUNGLE") {
-							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS JUNGLE", totalGames, killsArrayJungle.length)
-							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS jungleMatches.length", jungleMatches.length, killsArrayJungle.length)
-
 							if(totalGames === killsArrayJungle.length){	
 								getOneMatchDataDoneJungle = true;
 								checkValue4();
@@ -546,9 +601,6 @@ app.get('/', (req, res) => {
 						}
 
 						if(position === "SUPPORT") {
-							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS SUPPPORTT", totalGames, killsArraySupport.length)
-							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS SUPORTTTTTT.length", supportMatches.length, killsArraySupport.length)
-
 							if(totalGames === killsArraySupport.length){	
 								getOneMatchDataDoneSupport = true;
 								checkValue6();
@@ -556,9 +608,6 @@ app.get('/', (req, res) => {
 						}
 
 						if(position === "ADC") {
-							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS ADCCCCCCCC", totalGames, killsArrayAdc.length)
-							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS ADCCCCMatches.length", topMatches.length, killsArrayAdc.length)
-
 							if(totalGames === killsArrayAdc.length){	
 								getOneMatchDataDoneAdc = true;
 								checkValue5();
@@ -579,6 +628,12 @@ app.get('/', (req, res) => {
 				gameResults(info.teams, info.participantIdentities, position)	
 			}
 		}
+
+
+
+
+
+
 
 
 		if(position === "MID") {
@@ -606,16 +661,12 @@ app.get('/', (req, res) => {
 		if(position === "ALL") {
 			position = "ALL";	
 			info = allMatches;
-			//			console.log("MiDMATCHES", midMatches)
-			//			console.log("pos", position)
+			console.log("ALL MATCHES", allMatches)
 		}
-
-		//		console.log("POSITRIONNNNNNNNNNNNNNNN POSITION POSITION", position)
 
 		if(position === "TOP") {
 			position = "TOP";		
 			info = topMatches;
-
 
 			if(info.length === 0) {
 				console.log("ZERO MATCHES TOPP", info.length)
@@ -631,8 +682,6 @@ app.get('/', (req, res) => {
 			position = "JUNGLE";		
 			info = jungleMatches;
 
-
-
 			if(info.length === 0) {
 				console.log("ZERO MATCHES JUNGLE", info.length)
 				console.log("CALL CHECKVALUE 4")
@@ -647,8 +696,6 @@ app.get('/', (req, res) => {
 			position = "SUPPORT";		
 			info = supportMatches;
 
-
-
 			if(info.length === 0) {
 				console.log("ZERO MATCHES SUPPORT", info.length)
 				console.log("CALL CHECKVALUE 6")
@@ -658,8 +705,6 @@ app.get('/', (req, res) => {
 				return;
 			}
 		}
-
-		// MIGHT DO THIS FOR ALLL OF THESE 
 
 		if(position === "ADC") {
 			position = "ADC";		
@@ -671,7 +716,6 @@ app.get('/', (req, res) => {
 				console.log("CALL CHECKVALUE 5")
 				getOneMatchDataDoneAdc = true;
 
-				// SAYING WIN LOSE ARRAY COMPLETE AS IT IS EMPTY DO FOR ALLL ?????????????????????
 				winLoseArrayAdcDone = true;
 				checkValue5();
 				return;
@@ -680,27 +724,20 @@ app.get('/', (req, res) => {
 
 		matchCount2 = 0;
 
-		totalGames = info.length;
-
-		//		if(totalGames = 0) {
-		//			console.log("ZEROOOOOOOOOOOOOOOOOO GAMESSSSSSSSS")
-		//			console.log("POSITRINNNN POSITION POSITION IN in in", position)
-		//			if(position === "TOP") {
-		//				console.log("DKDDJIDODKIODINODNODNODND")
-		//			}
-		//		}
-		//	manyValues["totalGames"] = info.totalGames;		
+		totalGames = info.length;	
 		console.log("TG", totalGames)
 
-
-		var interval = 200; // how much time should the delay between two iterations be (in milliseconds)?
+		var interval = 100; // how much time should the delay between two iterations be (in milliseconds)?
 		var promise = Promise.resolve();
 
 		console.log("INFO", info)
 
 		//		var counterNew = 1;
 
+
+
 		await info.forEach(element => {
+
 
 			promise = promise.then(function () {				
 				//				console.log("Match Count rb", matchCount);
@@ -708,6 +745,9 @@ app.get('/', (req, res) => {
 				//				console.log("info each", info[matchCount])			
 
 				console.log("Match Count2 This Loop", matchCount2);
+
+				lane = element.lane
+				console.log("LANE", lane, matchCount2);
 
 				//				console.log("SPLIT /////////////// SPLIT");
 
@@ -720,21 +760,27 @@ app.get('/', (req, res) => {
 
 				if (position === "MID") {
 					championIdArrayMid.push(element.champion);
+					championIdArray.push(element.champion);
 				}
 				if (position === "ALL") {
 					championIdArray.push(element.champion);
+
 				}
 				if (position === "TOP") {
 					championIdArrayTop.push(element.champion);
+					championIdArray.push(element.champion);
 				}
 				if (position === "JUNGLE") {
 					championIdArrayJungle.push(element.champion);
+					championIdArray.push(element.champion);
 				}
 				if (position === "SUPPORT") {
 					championIdArraySupport.push(element.champion);
+					championIdArray.push(element.champion);
 				}
 				if (position === "ADC") {
 					championIdArrayAdc.push(element.champion);
+					championIdArray.push(element.champion);
 				}
 
 				let optionsGetOneMatch = {
@@ -1006,8 +1052,8 @@ app.get('/', (req, res) => {
 	var position = "def";
 	const apiKey = apikey;
 	//	let accountName = "Top%209th%20Sup%20LFL2";
-	//	let accountName = "sudofo";
-	let accountName = "hide on bush";
+		let accountName = "sudofo";
+//	let accountName = "hide on bush";
 	let accountId;
 	let id;
 	let participantId;
@@ -1016,8 +1062,8 @@ app.get('/', (req, res) => {
 	let championId;
 	let matchInfo;
 
-	//	let zoneCode = "euw1";
-	let zoneCode = "kr";
+		let zoneCode = "euw1";
+//	let zoneCode = "kr";
 
 	let totalGames;
 
@@ -1094,8 +1140,8 @@ app.get('/', (req, res) => {
 
 	let winLoseArray = [];
 	let dateNow = Date.now();
+	let unix8daysAgo = Date.now() - 7*24*60*60*1000;
 	let unix7daysAgo = Date.now() - 7*24*60*60*1000;
-	let unix2daysAgo = Date.now() - 7*24*60*60*1000;
 
 	let championIdArray = [];
 
@@ -1122,7 +1168,7 @@ app.get('/', (req, res) => {
 
 
 	let optionsGetMatches = {
-		url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix2daysAgo}&api_key=${apiKey}`		
+		url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
 	};
 
 	let optionsGetRanks = {
@@ -1153,7 +1199,7 @@ app.get('/', (req, res) => {
 			apiCalls++;
 
 			optionsGetMatches = {
-				url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix2daysAgo}&api_key=${apiKey}`		
+				url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
 			};
 
 			optionsGetRanks = {
@@ -1187,7 +1233,7 @@ app.get('/', (req, res) => {
 		summonerName = info.name;
 
 		optionsGetMatches = {
-			url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix2daysAgo}&api_key=${apiKey}`		
+			url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
 		};
 
 		optionsGetRanks = {
@@ -1315,7 +1361,7 @@ app.get('/', (req, res) => {
 
 					matchInfo = info.matches[matchCount];
 					gameId = info.matches[matchCount].gameId;
-					championIdArray.push(element.champion);
+					//					championIdArray.push(element.champion);
 
 					positionRole = element.role;
 					positionLane = element.lane;
@@ -1360,7 +1406,11 @@ app.get('/', (req, res) => {
 
 					if(matchCount === totalGames) {
 						console.log("Total games loaded");
-						getPositionValues("ALL");						
+						//						getPositionValues("ALL");	
+
+						getOneMatchDataDoneAll = true;
+						winLoseArrayDoneAll = true;
+						checkValue();
 					}
 
 
@@ -1406,6 +1456,10 @@ app.get('/', (req, res) => {
 		if(getOneMatchDataDoneAll === true && winLoseArrayDoneAll === true) {
 			console.log("checkValue SUCCESS" );
 			midFuncRun = false;
+
+			console.log("Lane mid Array", testArrayMid);
+			console.log("Real mid Array", gameDurationArrayMid);
+
 			await getPositionValues("MID");
 
 
@@ -1496,6 +1550,12 @@ app.get('/', (req, res) => {
 			console.log("checkValue6 SUCCESS" );
 			console.log("WE MADE IT");
 			console.log("Final Api call number", apiCalls);
+			console.log("Lane Array", lane);
+
+			console.log("Real mid Array", gameDurationArrayMid);
+			console.log("championIdArray", championIdArray);
+
+
 
 			supportFuncRun = true;
 

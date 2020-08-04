@@ -176,7 +176,7 @@ body {
 
 /* mini boxes postion*/
 .wrapper {
-	max-width: 800px;
+	max-width: 700px;
 	margin: auto;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -198,6 +198,7 @@ body {
 }
 
 .row__value--position {
+	width: 70px;
 	white-space: nowrap;
 }
 .position-title {
