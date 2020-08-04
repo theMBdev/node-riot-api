@@ -15,6 +15,7 @@ app.use(express.static(__dirname + '/public'));
 // routes
 app.get('/', (req, res) => {
 
+	var apiCalls = 0;
 
 	var allDataLoadedTrueFalse = false;	
 	var midDataLoadedTrueFalse = false;	
@@ -45,7 +46,7 @@ app.get('/', (req, res) => {
 
 		let resultToReturn;
 
-		console.log("INSIDE GAMERESULTS START")
+		//		console.log("INSIDE GAMERESULTS START")
 		// Get winner id so i can check if the player was on this team
 		infoTeams.find(element => {
 			if(element.win === "Win") {
@@ -110,58 +111,71 @@ app.get('/', (req, res) => {
 
 		//		console.log("GAMES RESULTS", winLoseArrayMid)
 		//		console.log("GAMES RESULTS", winLoseArray)
-		console.log("INSIDE GAMERESULTS END")
+		//		console.log("INSIDE GAMERESULTS END")
 
-		if(winLoseArray.length === totalGames) {
+		if(winLoseArray.length === totalGames && position === "ALL") {
 			winLoseArrayDoneAll = true;
 			checkValue();
+		} else if (position != "ALL") {
+			console.log("");
 		} else {
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO ALL", totalGames, winLoseArray.length)
+			console.log("winLoseArray Finished? No", totalGames, winLoseArray.length)
+			console.log("API CALLS", apiCalls)
 		}
 
-		if(winLoseArrayMid.length === midMatches.length && midFuncRun === false) {
-			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 MID")
+		if(winLoseArrayMid.length === midMatches.length && midFuncRun === false && position === "MID") {
+			console.log("WINLOSEARRAY FINISHED MID")
 			winLoseArrayMidDone = true;
 			checkValue2();
+		} else if (position != "MID") {
+			console.log("");
 		} else {
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 MID", midMatches.length, winLoseArrayMid.length)
+			console.log("winLoseArrayMid Finished? No", midMatches.length, winLoseArrayMid.length)
 			//			console.log("midMatches", midMatches.length)
 		}	
 
-		if(winLoseArrayTop.length === topMatches.length && topFuncRun === false) {
-			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 TOP")
+		if(winLoseArrayTop.length === topMatches.length && topFuncRun === false && position === "TOP") {
+			console.log("WINLOSEARRAY FINISHED TOP")
 			winLoseArrayTopDone = true;
 			checkValue3();
+		} else if (position != "TOP") {
+			console.log("");
 		} else {
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 TOP", topMatches.length, winLoseArrayTop.length)
+			console.log("winLoseArrayTop Finished? No", topMatches.length, winLoseArrayTop.length, topFuncRun)
 			//			console.log("topMatches", topMatches.length)
 		}	
 
 
-		if(winLoseArrayJungle.length === jungleMatches.length && jungleFuncRun === false) {
-			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 JUNGLE")
+		if(winLoseArrayJungle.length === jungleMatches.length && jungleFuncRun === false && position === "JUNGLE") {
+			console.log("WINLOSEARRAY FINISHED JUNGLE")
 			winLoseArrayJungleDone = true;
 			checkValue4();
+		} else if (position != "JUNGLE") {
+			console.log("");
 		} else {
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 Jungle", jungleMatches.length, winLoseArrayJungle.length)
+			console.log("winLoseArrayJungle Finished? No", jungleMatches.length, winLoseArrayJungle.length)
 			//			console.log("topMatches", topMatches.length)
 		}	
 
-		if(winLoseArrayAdc.length === adcMatches.length && adcFuncRun === false) {
-			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 ADC")
+		if(winLoseArrayAdc.length === adcMatches.length && adcFuncRun === false && position === "ADC") {
+			console.log("WINLOSEARRAY FINISHED ADC")
 			winLoseArrayAdcDone = true;
 			checkValue5();
+		} else if (position != "ADC") {
+			console.log("");
 		} else {
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 ADC", adcMatches.length, winLoseArrayAdc.length)
+			console.log("winLoseArrayAdc Finished? No", adcMatches.length, winLoseArrayAdc.length)
 			//			console.log("topMatches", topMatches.length)
 		}	
 
-		if(winLoseArraySupport.length === supportMatches.length && supportFuncRun === false) {
-			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 Support")
+		if(winLoseArraySupport.length === supportMatches.length && supportFuncRun === false && position === "SUPPORT") {
+			console.log("WINLOSEARRAY FINISHED Support")
 			winLoseArraySupportDone = true;
 			checkValue6();
+		} else if (position != "SUPPORT") {
+			console.log("");
 		} else {
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 Support", supportMatches.length, winLoseArraySupport.length)
+			console.log("winLoseArraySupport Finished? No", supportMatches.length, winLoseArraySupport.length)
 			//			console.log("topMatches", topMatches.length)
 		}	
 
@@ -194,7 +208,7 @@ app.get('/', (req, res) => {
 	// gets the champion name
 	// needed to be async so that the champion name value got saved before the page rendered
 	async function getMostPlayedChampionName(id, position) {
-		console.log("getMostPlayedChampionName");
+		//		console.log("getMostPlayedChampionName");
 		// API call to leauges champion db
 		let data = await fetch('http://ddragon.leagueoflegends.com/cdn/10.15.1/data/en_US/champion.json');		
 
@@ -247,7 +261,7 @@ app.get('/', (req, res) => {
 
 	// return most played champion id, result will be used in getMostPlayedChampionName
 	function getMostPlayedChampionId(array) {
-		console.log("getMostPlayedChampionId");
+		//		console.log("getMostPlayedChampionId");
 		let counts = array.reduce((a, c) => {
 			a[c] = (a[c] || 0) + 1;
 			return a;
@@ -359,11 +373,14 @@ app.get('/', (req, res) => {
 	// calls getonematchNEW
 	// killsArray, assistsArray, deathsArray, gameDurationArray
 	async function getPositionValues(position) {
-		
+
 		console.log("START GET POSITION VALUES", position);
 		async function callbackGetOneMatchNew(error, response, body) {
 			if (!error && response.statusCode == 200) {
 				let info = JSON.parse(body);
+
+				apiCalls++;
+				console.log("API COUNTER", apiCalls);
 
 				//			experementCount++;
 
@@ -402,7 +419,7 @@ app.get('/', (req, res) => {
 				});
 
 
-				console.log("PARTICIPANT LENGTH", info.participants.length)
+				//				console.log("PARTICIPANT LENGTH", info.participants.length)
 				// Get kills deaths assists
 				info.participants.find(element => {
 					if(element.participantId === participantId) {
@@ -416,8 +433,8 @@ app.get('/', (req, res) => {
 							totalDamageDealtToChampionsArrayMid.push(element.stats.totalDamageDealtToChampions);
 						}
 
-						console.log("ELEMENT STATS KILLS ", element.stats.kills)
-						console.log("ELEMENT STATS KILLS POSITION ", position)
+						//						console.log("ELEMENT STATS KILLS ", element.stats.kills)
+
 
 						if(position === "TOP") {
 							killsArrayTop.push(element.stats.kills);
@@ -494,11 +511,10 @@ app.get('/', (req, res) => {
 						}
 
 						// COULD BE ERROR WHAT IS TOTAL GAMES HERE???????????????
-						console.log("INSIDE callbackGetOneMatchNew find participants")
+						//						console.log("INSIDE callbackGetOneMatchNew find participants")
 
 						if(position === "MID") {
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS MIDDDDDDDDD", totalGames, killsArrayMid.length)
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS midMatches.length", midMatches.length, killsArrayMid.length)
+							//							console.log("TOTAL GAMES MID", totalGames, midMatches.length killsArrayMid.length)		
 
 							if(totalGames === killsArrayMid.length){	
 								console.log("MID FINISHED ////////// MID FINSIHED //////// MID FINSHED");
@@ -510,8 +526,8 @@ app.get('/', (req, res) => {
 						// COULD BE ERROR WHAT IS TOTAL GAMES HERE???????????????
 
 						if(position === "TOP") {
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS TOPPPPPPPPPPPP", totalGames, killsArrayTop.length)
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS topMatches.length", topMatches.length, killsArrayTop.length)
+							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS TOPPPPPPPPPPPP", totalGames, killsArrayTop.length)
+							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS topMatches.length", topMatches.length, killsArrayTop.length)
 
 							if(totalGames === killsArrayTop.length){	
 								getOneMatchDataDoneTop = true;
@@ -520,8 +536,8 @@ app.get('/', (req, res) => {
 						}
 
 						if(position === "JUNGLE") {
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS JUNGLE", totalGames, killsArrayJungle.length)
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS jungleMatches.length", jungleMatches.length, killsArrayJungle.length)
+							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS JUNGLE", totalGames, killsArrayJungle.length)
+							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS jungleMatches.length", jungleMatches.length, killsArrayJungle.length)
 
 							if(totalGames === killsArrayJungle.length){	
 								getOneMatchDataDoneJungle = true;
@@ -530,8 +546,8 @@ app.get('/', (req, res) => {
 						}
 
 						if(position === "SUPPORT") {
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS SUPPPORTT", totalGames, killsArraySupport.length)
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS SUPORTTTTTT.length", supportMatches.length, killsArraySupport.length)
+							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS SUPPPORTT", totalGames, killsArraySupport.length)
+							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS SUPORTTTTTT.length", supportMatches.length, killsArraySupport.length)
 
 							if(totalGames === killsArraySupport.length){	
 								getOneMatchDataDoneSupport = true;
@@ -540,8 +556,8 @@ app.get('/', (req, res) => {
 						}
 
 						if(position === "ADC") {
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS ADCCCCCCCC", totalGames, killsArrayAdc.length)
-							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS ADCCCCMatches.length", topMatches.length, killsArrayAdc.length)
+							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS ADCCCCCCCC", totalGames, killsArrayAdc.length)
+							//							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS ADCCCCMatches.length", topMatches.length, killsArrayAdc.length)
 
 							if(totalGames === killsArrayAdc.length){	
 								getOneMatchDataDoneAdc = true;
@@ -549,11 +565,11 @@ app.get('/', (req, res) => {
 							}
 						}
 
-						console.log("KAM Leng", killsArrayMid.length)
-						console.log("KAMT", killsArrayTop)
-						console.log("GDA MID", gameDurationArrayMid)
-						console.log("GDA TOP", gameDurationArrayTop)
-						console.log("KA", killsArray);
+						//						console.log("KAM Leng", killsArrayMid.length)
+						//						console.log("KAMT", killsArrayTop)
+						//						console.log("GDA MID", gameDurationArrayMid)
+						//						console.log("GDA TOP", gameDurationArrayTop)
+						//						console.log("KA", killsArray);
 						console.log("Total Games", totalGames);
 					}	
 
@@ -572,7 +588,8 @@ app.get('/', (req, res) => {
 			//			console.log("pos", position)
 
 			if(info.length === 0) {
-				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 1")
+				console.log("ZERO MATCHES MID", info.length)
+				console.log("CALL CHECKVALUE 1")
 				getOneMatchDataDoneMid = true;
 				winLoseArrayMidDone = true;
 				checkValue2();
@@ -599,10 +616,10 @@ app.get('/', (req, res) => {
 			position = "TOP";		
 			info = topMatches;
 
-			console.log("ZEROOOOOOOOOOOOOOOOOOOOOOOOOOO MATCHES TOPPPPPPPP ZERO", info.length)
 
 			if(info.length === 0) {
-				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 3")
+				console.log("ZERO MATCHES TOPP", info.length)
+				console.log("CALL CHECKVALUE 3")
 				getOneMatchDataDoneTop = true;
 				winLoseArrayTopDone = true;
 				checkValue3();
@@ -614,10 +631,11 @@ app.get('/', (req, res) => {
 			position = "JUNGLE";		
 			info = jungleMatches;
 
-			console.log("ZEROOOOOOOOOOOOOOOOOOOOOOOOOOO MATCHES JUNGLEEEEEE ZERO", info.length)
+
 
 			if(info.length === 0) {
-				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 4")
+				console.log("ZERO MATCHES JUNGLE", info.length)
+				console.log("CALL CHECKVALUE 4")
 				getOneMatchDataDoneJungle = true;
 				winLoseArrayJungleDone = true;
 				checkValue4();
@@ -629,10 +647,11 @@ app.get('/', (req, res) => {
 			position = "SUPPORT";		
 			info = supportMatches;
 
-			console.log("ZEROOOOOOOOOOOOOOOOOOOOOOOOOOO MATCHES SUPPORTT ZERO", info.length)
+
 
 			if(info.length === 0) {
-				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 6")
+				console.log("ZERO MATCHES SUPPORT", info.length)
+				console.log("CALL CHECKVALUE 6")
 				getOneMatchDataDoneSupport = true;
 				winLoseArraySupportDone = true;
 				checkValue6();
@@ -646,10 +665,10 @@ app.get('/', (req, res) => {
 			position = "ADC";		
 			info = adcMatches;
 
-			console.log("ZEROOOOOOOOOOOOOOOOOOOOOOOOOOO MATCHES ADCCCCCC ZERO", info.length)
 
 			if(info.length === 0) {
-				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 5")
+				console.log("ZERO MATCHES ADC", info.length)
+				console.log("CALL CHECKVALUE 5")
 				getOneMatchDataDoneAdc = true;
 
 				// SAYING WIN LOSE ARRAY COMPLETE AS IT IS EMPTY DO FOR ALLL ?????????????????????
@@ -674,7 +693,7 @@ app.get('/', (req, res) => {
 		console.log("TG", totalGames)
 
 
-		var interval = 60; // how much time should the delay between two iterations be (in milliseconds)?
+		var interval = 200; // how much time should the delay between two iterations be (in milliseconds)?
 		var promise = Promise.resolve();
 
 		console.log("INFO", info)
@@ -690,9 +709,9 @@ app.get('/', (req, res) => {
 
 				console.log("Match Count2 This Loop", matchCount2);
 
-				console.log("SPLIT /////////////// SPLIT");
+				//				console.log("SPLIT /////////////// SPLIT");
 
-				console.log("CURRENT ELEMNT", element)
+				//				console.log("CURRENT ELEMNT", element)
 				console.log("GAME ID", element.gameId)
 
 				matchInfo = element;
@@ -722,9 +741,9 @@ app.get('/', (req, res) => {
 					url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
 				};			
 
-				console.log("START  INSIDE GETPOSITIONVALUE")					
+				//				console.log("START  INSIDE GETPOSITIONVALUE")					
 				request(optionsGetOneMatch, callbackGetOneMatchNew);
-				console.log("END INSIDE GETPOSITIONVALUE")
+				//				console.log("END INSIDE GETPOSITIONVALUE")
 
 
 				if(matchCount2 === totalGames) {
@@ -742,7 +761,7 @@ app.get('/', (req, res) => {
 
 		let jesusVar = "jesus";
 		console.log("ENDING GET POSITION VALUES");
-//		return jesusVar;
+		//		return jesusVar;
 	}
 
 
@@ -761,7 +780,7 @@ app.get('/', (req, res) => {
 			let gamesWinCounter = 0;
 			var gameCounter = 0;
 
-			console.log("WIN LOSE ", arrayOfGamesWinLOss);
+			//			console.log("WIN LOSE ", arrayOfGamesWinLOss);
 
 			arrayOfGamesWinLOss.forEach(element => {
 				if(element.resultToReturn === "Win") {
@@ -772,7 +791,7 @@ app.get('/', (req, res) => {
 				}
 			})
 
-			console.log("COUNTRRD ADOIH  COUNTERS", gamesWinCounter, gameCounter)
+			//			console.log("COUNTRRD ADOIH  COUNTERS", gamesWinCounter, gameCounter)
 
 			// used to make sure all games were loaded in the array
 			if(gameCounter === arrayOfGamesWinLOss.length) {
@@ -921,7 +940,7 @@ app.get('/', (req, res) => {
 
 
 
-		console.log("IIIIIIIIIIIIII GOT HERE 10");
+		//		console.log("IIIIIIIIIIIIII GOT HERE 10");
 		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArray), "ALL");
 		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "MID");
 		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayJungle), "JUNGLE");
@@ -987,8 +1006,8 @@ app.get('/', (req, res) => {
 	var position = "def";
 	const apiKey = apikey;
 	//	let accountName = "Top%209th%20Sup%20LFL2";
-	let accountName = "hazouzo";
-	//	let accountName = "hide on bush";
+	//	let accountName = "sudofo";
+	let accountName = "hide on bush";
 	let accountId;
 	let id;
 	let participantId;
@@ -997,8 +1016,8 @@ app.get('/', (req, res) => {
 	let championId;
 	let matchInfo;
 
-	let zoneCode = "euw1";
-	//	let zoneCode = "kr";
+	//	let zoneCode = "euw1";
+	let zoneCode = "kr";
 
 	let totalGames;
 
@@ -1076,7 +1095,7 @@ app.get('/', (req, res) => {
 	let winLoseArray = [];
 	let dateNow = Date.now();
 	let unix7daysAgo = Date.now() - 7*24*60*60*1000;
-	//	let unix2daysAgo = Date.now() - 2*24*60*60*1000;
+	let unix2daysAgo = Date.now() - 7*24*60*60*1000;
 
 	let championIdArray = [];
 
@@ -1103,7 +1122,7 @@ app.get('/', (req, res) => {
 
 
 	let optionsGetMatches = {
-		url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
+		url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix2daysAgo}&api_key=${apiKey}`		
 	};
 
 	let optionsGetRanks = {
@@ -1125,15 +1144,16 @@ app.get('/', (req, res) => {
 	// This runs first
 	// gets accounId and uses it to calls getMatches and ranks
 	async function callbackGetName(error, response, body) {
-		if (!error && response.statusCode == 200) {
-
+		if (!error && response.statusCode == 200) {		
 			let info = JSON.parse(body);
 			accountId = info.accountId;
 			id = info.id;
 			summonerName = info.name;
 
+			apiCalls++;
+
 			optionsGetMatches = {
-				url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
+				url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix2daysAgo}&api_key=${apiKey}`		
 			};
 
 			optionsGetRanks = {
@@ -1157,6 +1177,8 @@ app.get('/', (req, res) => {
 		let response = await fetch(optionsGetName)
 		let data = await response.json()
 
+		apiCalls++;
+
 		console.log("CALLBACK GET NAMES NEWNEWNEWNEWNEWNEWNEWNEW")
 
 		let info = JSON.parse(data);
@@ -1165,7 +1187,7 @@ app.get('/', (req, res) => {
 		summonerName = info.name;
 
 		optionsGetMatches = {
-			url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
+			url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix2daysAgo}&api_key=${apiKey}`		
 		};
 
 		optionsGetRanks = {
@@ -1221,6 +1243,8 @@ app.get('/', (req, res) => {
 		let response = await fetch(urlNew)
 		let data = await response.json()
 
+		apiCalls++;
+
 		console.log(JSON.stringify(data, null, "\t"))
 	}
 
@@ -1246,6 +1270,8 @@ app.get('/', (req, res) => {
 		if (!error && response.statusCode == 200) {
 			let info = JSON.parse(body);
 
+			apiCalls++;
+
 			let counter = 0;
 			info.forEach(element => {
 
@@ -1267,6 +1293,8 @@ app.get('/', (req, res) => {
 		if (!error && response.statusCode == 200) {
 			let info = JSON.parse(body);
 
+			apiCalls++;
+
 			matchCount = 0;
 
 			totalGames = info.totalGames;
@@ -1274,7 +1302,7 @@ app.get('/', (req, res) => {
 
 			allMatches = info.matches;
 
-			var interval = 60; // how much time should the delay between two iterations be (in milliseconds)?
+			var interval = 100; // how much time should the delay between two iterations be (in milliseconds)?
 			var promise = Promise.resolve();
 
 			//			queueId: 420 = Ranked Solo
@@ -1357,36 +1385,32 @@ app.get('/', (req, res) => {
 
 	async function startEverything() {
 		await getRanksNew()		
-		await request(optionsGetTest, callbackGetTest);
 		await request(optionsGetName, callbackGetName);
 		await request(optionsGetRanks, callbackGetRanks);
 
 		// calls finalise data , calls get positionValue
 		await request(optionsGetMatches, callbackGetMatches);
 
-
-
-
 	}	
 
 	startEverything();
 
-	let midFuncRun;
-	let topFuncRun;
-	let jungleFuncRun;
-	let adcFuncRun;
-	let supportFuncRun;
+	let midFuncRun = false;
+	let topFuncRun = false;
+	let jungleFuncRun = false;
+	let adcFuncRun = false;
+	let supportFuncRun = false;
 
 
 	async function checkValue() {
 		if(getOneMatchDataDoneAll === true && winLoseArrayDoneAll === true) {
-			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+			console.log("checkValue SUCCESS" );
 			midFuncRun = false;
-			getPositionValues("MID");
+			await getPositionValues("MID");
 
 
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTT ONE ALL", getOneMatchDataDoneAll, winLoseArrayDoneAll)
+			console.log("ALL checkValue", getOneMatchDataDoneAll, winLoseArrayDoneAll)
 		}
 	}
 
@@ -1394,18 +1418,20 @@ app.get('/', (req, res) => {
 
 	async function checkValue2() {
 		if(getOneMatchDataDoneMid === true && winLoseArrayMidDone === true && midFuncRun === false) {
-			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 222222222" );
+			console.log("checkValue2 SUCCESS" );
 			console.log("midFuncRun", midFuncRun)
 			midFuncRun = true;
 			topFuncRun = false;
-			console.log("STARTING TOP STARTING TOP STARTING TOP STARTING TOP STARTING TOP STARTING TOP" );
+
 			//			getPositionValues("MID");
 			position = "TOP";
 			await getPositionValues("TOP");
 
 
-		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT TWO MIDDDDDD", getOneMatchDataDoneMid, winLoseArrayMidDone)
+		} else if (midFuncRun === true) {
+			console.log("ITS RUNS AND DONE MID");
+		}  else {
+			console.log("MID checkValue2", getOneMatchDataDoneMid, winLoseArrayMidDone)
 		}
 	}
 
@@ -1413,13 +1439,10 @@ app.get('/', (req, res) => {
 	async function checkValue3() {
 		if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true && topFuncRun === false) {
 			//			if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true) {
-			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 33333333" );
+			console.log("checkValue3 SUCCESS" );
 			jungleFuncRun = false;
 			topFuncRun = true;
-			console.log("STARTING JUNGLE STARTING JUNGLE STARTING JUNGLE STARTING JUNGLE STARTING JUNGLE STARTING JUNGLJUNGLEJUNGLEJUNGLEJUNGLEJUNGLEE" );
 
-			//			getPositionValues("MID");
-			//			await getPositionValues("TOP");
 
 			await getPositionValues("JUNGLE");
 
@@ -1428,15 +1451,14 @@ app.get('/', (req, res) => {
 
 
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT THREE TOPPP", getOneMatchDataDoneTop, winLoseArrayTopDone)
+			console.log("TOP checkValue3", getOneMatchDataDoneTop, winLoseArrayTopDone)
 		}
 	}
 
 	async function checkValue4() {
 		if(getOneMatchDataDoneJungle === true && winLoseArrayJungleDone === true && jungleFuncRun === false ) {
 			//			if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true) {
-			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 44444444" );
-
+			console.log("checkValue4 SUCCESS" );
 
 
 			jungleFuncRun = true;
@@ -1446,14 +1468,14 @@ app.get('/', (req, res) => {
 
 
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT FOUR JUNGLEEEEEEE", getOneMatchDataDoneJungle, winLoseArrayJungleDone)
+			console.log("JUNGLE checkValue4", getOneMatchDataDoneJungle, winLoseArrayJungleDone)
 		}
 	}
 
 	async function checkValue5() {
 		if(getOneMatchDataDoneAdc === true && winLoseArrayAdcDone === true && adcFuncRun === false ) {
 			//			if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true) {
-			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 55555555555" );
+			console.log("checkValue5 SUCCESS" );
 
 
 
@@ -1464,15 +1486,16 @@ app.get('/', (req, res) => {
 
 
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT FOUR ADCCCCCCCCCC", getOneMatchDataDoneAdc, winLoseArrayAdcDone, adcFuncRun)
+			console.log("ADC checkValue5", getOneMatchDataDoneAdc, winLoseArrayAdcDone, adcFuncRun)
 		}
 	}
 
 	async function checkValue6() {
 		if(getOneMatchDataDoneSupport === true && winLoseArraySupportDone === true && supportFuncRun === false ) {
 			//			if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true) {
-			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 6666666666" );
-			console.log("WE MADE ITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT YEWAH               WE MADE ITTTTTTTTTTTTTTTTTTTTTTT" );
+			console.log("checkValue6 SUCCESS" );
+			console.log("WE MADE IT");
+			console.log("Final Api call number", apiCalls);
 
 			supportFuncRun = true;
 
@@ -1482,7 +1505,7 @@ app.get('/', (req, res) => {
 
 
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT FOUR SUPORTTTTTTTTTT", getOneMatchDataDoneSupport, winLoseArraySupportDone)
+			console.log("SUPPORT checkValue6", getOneMatchDataDoneSupport, winLoseArraySupportDone)
 		}
 	}
 

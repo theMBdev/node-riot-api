@@ -138,6 +138,9 @@
 
 			<div class="wrapper">
 
+				<% if(manyValuesTop.totalGames === 0) { %>
+				
+				<% } else { %>
 				<div>
 					<div class="position-title">Top</div>
 
@@ -190,7 +193,11 @@
 						<span class="row__value--position"><%= manyValuesTop.totalDamageDealtToChampions %></span>
 					</div>
 				</div>
+				<% } %>
 
+				<% if(manyValuesMid.totalGames === 0) { %>
+				
+				<% } else { %>
 				<div>
 					<div class="position-title">Mid</div>
 
@@ -243,7 +250,11 @@
 						<span class="row__value--position"><%= manyValuesMid.totalDamageDealtToChampions %></span>
 					</div>
 				</div>
+				<% } %>
 
+				<% if(manyValuesJungle.totalGames === 0) { %>
+				
+				<% } else { %>
 				<div>
 					<div class="position-title">Jungle</div>
 
@@ -296,7 +307,11 @@
 						<span class="row__value--position"><%= manyValuesJungle.totalDamageDealtToChampions %></span>
 					</div>
 				</div>
+				<% } %>
 
+				<% if(manyValuesAdc.totalGames === 0) { %>
+				
+				<% } else { %>
 				<div>
 					<div class="position-title">Adc</div>
 
@@ -349,6 +364,7 @@
 						<span class="row__value--position"><%= manyValuesAdc.totalDamageDealtToChampions %></span>
 					</div>
 				</div>
+				<% } %>
 
 				<% if(manyValuesSupport.totalGames === 0) { %>
 				
