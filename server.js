@@ -19,10 +19,22 @@ app.get('/', (req, res) => {
 	var allDataLoadedTrueFalse = false;	
 	var midDataLoadedTrueFalse = false;	
 
+
+
 	var getOneMatchDataDoneAll = false;
-	var getOneMatchMidDataDone = false;
+	var getOneMatchDataDoneMid = false;
+	var getOneMatchDataDoneTop = false;
+	var getOneMatchDataDoneJungle = false;
+	var getOneMatchDataDoneAdc= false;
+	var getOneMatchDataDoneSupport= false;
+
+
 	var winLoseArrayDoneAll = false;
 	var winLoseArrayMidDone = false;
+	var winLoseArrayJungleDone = false;
+	var winLoseArrayAdcDone = false;
+	var winLoseArraySupportDone = false;
+	var winLoseArrayTopDone = false;
 
 
 	// UNSORTED FUNCTIONS
@@ -73,10 +85,25 @@ app.get('/', (req, res) => {
 			}	
 		});		
 
-		
+
 		if(position === "MID") {
 			winLoseArrayMid.push({resultToReturn, winnerId, summonerTeam});
 		} 
+		if(position === "TOP") {
+			winLoseArrayTop.push({resultToReturn, winnerId, summonerTeam});
+		} 
+
+		if(position === "JUNGLE") {
+			winLoseArrayJungle.push({resultToReturn, winnerId, summonerTeam});
+		} 
+
+		if(position === "SUPPORT") {
+			winLoseArraySupport.push({resultToReturn, winnerId, summonerTeam});
+		} 
+		if(position === "ADC") {
+			winLoseArrayAdc.push({resultToReturn, winnerId, summonerTeam});
+		} 
+
 		if(position === "ALL") {
 			winLoseArray.push({resultToReturn, winnerId, summonerTeam});
 		}
@@ -86,24 +113,77 @@ app.get('/', (req, res) => {
 		console.log("INSIDE GAMERESULTS END")
 
 		if(winLoseArray.length === totalGames) {
-			console.log("WINLOSEA    RRAY ALL FI   NS         I       SHE D")
 			winLoseArrayDoneAll = true;
 			checkValue();
 		} else {
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO")
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO", totalGames, winLoseArray.length)
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO ALL", totalGames, winLoseArray.length)
 		}
 
-
-		if(winLoseArrayMid.length === midMatches.length) {
-			console.log("WINLOSEA    RRAY ALL FI   NS         I       SHE D 222")
+		if(winLoseArrayMid.length === midMatches.length && midFuncRun === false) {
+			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 MID")
 			winLoseArrayMidDone = true;
 			checkValue2();
 		} else {
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO 222")
-			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222", midMatches.length, winLoseArrayMid.length)
-			console.log("midMatches", midMatches.length)
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 MID", midMatches.length, winLoseArrayMid.length)
+			//			console.log("midMatches", midMatches.length)
 		}	
+
+		if(winLoseArrayTop.length === topMatches.length && topFuncRun === false) {
+			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 TOP")
+			winLoseArrayTopDone = true;
+			checkValue3();
+		} else {
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 TOP", topMatches.length, winLoseArrayTop.length)
+			//			console.log("topMatches", topMatches.length)
+		}	
+
+
+		if(winLoseArrayJungle.length === jungleMatches.length && jungleFuncRun === false) {
+			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 JUNGLE")
+			winLoseArrayJungleDone = true;
+			checkValue4();
+		} else {
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 Jungle", jungleMatches.length, winLoseArrayJungle.length)
+			//			console.log("topMatches", topMatches.length)
+		}	
+
+		if(winLoseArrayAdc.length === adcMatches.length && adcFuncRun === false) {
+			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 ADC")
+			winLoseArrayAdcDone = true;
+			checkValue5();
+		} else {
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 ADC", adcMatches.length, winLoseArrayAdc.length)
+			//			console.log("topMatches", topMatches.length)
+		}	
+
+		if(winLoseArraySupport.length === supportMatches.length && supportFuncRun === false) {
+			console.log("WINLOSEA    RRAY ALL FINISHED FINISHED FINISHED FINISHED 222 Support")
+			winLoseArraySupportDone = true;
+			checkValue6();
+		} else {
+			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 Support", supportMatches.length, winLoseArraySupport.length)
+			//			console.log("topMatches", topMatches.length)
+		}	
+
+
+
+		//		if(winLoseArrayTop.length === topMatches.length) {
+		//			console.log("WINLOSEA    RRAY ALL FI   NS         I       SHE D 222 TOP")
+		//			winLoseArrayTopDone = true;
+		//			checkValue3();
+		//		} else {
+		//			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 TOP", topMatches.length, winLoseArrayTop.length)
+		//			//			console.log("topMatches", topMatches.length)
+		//		}	
+		//
+		//		if(winLoseArrayTop.length === topMatches.length) {
+		//			console.log("WINLOSEA    RRAY ALL FI   NS         I       SHE D 222 TOP")
+		//			winLoseArrayTopDone = true;
+		//			checkValue3();
+		//		} else {
+		//			console.log("WINLOSEA    RRAY ALL FI   NS       NOPOOOOOOOOOOOO  222 TOP", topMatches.length, winLoseArrayTop.length)
+		//			//			console.log("topMatches", topMatches.length)
+		//		}	
 
 		return resultToReturn;
 
@@ -133,6 +213,30 @@ app.get('/', (req, res) => {
 			if(position === "MID") {
 				if (championList[i].key == id) {
 					manyValuesMid["mostPlayedChampion"] = championList[i].id;
+				}
+			}
+
+			if(position === "TOP") {
+				if (championList[i].key == id) {
+					manyValuesTop["mostPlayedChampion"] = championList[i].id;
+				}
+			}
+
+			if(position === "JUNGLE") {
+				if (championList[i].key == id) {
+					manyValuesJungle["mostPlayedChampion"] = championList[i].id;
+				}
+			}
+
+			if(position === "ADC") {
+				if (championList[i].key == id) {
+					manyValuesAdc["mostPlayedChampion"] = championList[i].id;
+				}
+			}
+
+			if(position === "SUPPORT") {
+				if (championList[i].key == id) {
+					manyValuesSupport["mostPlayedChampion"] = championList[i].id;
 				}
 			}
 
@@ -194,18 +298,57 @@ app.get('/', (req, res) => {
 
 
 
-
-
-
 	let killsArrayMid = [];
 	let deathsArrayMid = [];
 	let assistsArrayMid = [];
 	let totalDamageDealtToChampionsArrayMid = [];
 	let creepScoreArrayMid = [];
 	let gameDurationArrayMid = [];
-
 	let winLoseArrayMid = [];
 	let championIdArrayMid = [];
+
+
+	let killsArrayTop = [];
+	let deathsArrayTop = [];
+	let assistsArrayTop = [];
+	let totalDamageDealtToChampionsArrayTop = [];
+	let creepScoreArrayTop = [];
+	let gameDurationArrayTop = [];
+	let winLoseArrayTop = [];
+	let championIdArrayTop = [];
+
+
+	let killsArrayJungle = [];
+	let deathsArrayJungle = [];
+	let assistsArrayJungle = [];
+	let totalDamageDealtToChampionsArrayJungle = [];
+	let creepScoreArrayJungle = [];
+	let gameDurationArrayJungle = [];
+	let winLoseArrayJungle = [];
+	let championIdArrayJungle = [];
+
+
+	let killsArrayAdc = [];
+	let deathsArrayAdc = [];
+	let assistsArrayAdc = [];
+	let totalDamageDealtToChampionsArrayAdc = [];
+	let creepScoreArrayAdc = [];
+	let gameDurationArrayAdc = [];
+	let winLoseArrayAdc = [];
+	let championIdArrayAdc = [];
+
+
+	let killsArraySupport = [];
+	let deathsArraySupport = [];
+	let assistsArraySupport = [];
+	let totalDamageDealtToChampionsArraySupport = [];
+	let creepScoreArraySupport = [];
+	let gameDurationArraySupport = [];
+	let winLoseArraySupport = [];
+	let championIdArraySupport = [];
+
+
+
 
 
 	let info = "";
@@ -216,8 +359,8 @@ app.get('/', (req, res) => {
 	// calls getonematchNEW
 	// killsArray, assistsArray, deathsArray, gameDurationArray
 	async function getPositionValues(position) {
-
-		console.log("START GET POSITION VALUES");
+		
+		console.log("START GET POSITION VALUES", position);
 		async function callbackGetOneMatchNew(error, response, body) {
 			if (!error && response.statusCode == 200) {
 				let info = JSON.parse(body);
@@ -227,10 +370,29 @@ app.get('/', (req, res) => {
 				// this does not get triggered
 				if(position === "MID") {
 					gameDurationArrayMid.push(info.gameDuration);
+					console.log("ADDING TO GAMES ARRRAY DURATION MID", gameDurationArrayMid)
 				}
 
 				if(position === "ALL") {
 					gameDurationArray.push(info.gameDuration);
+				}
+
+				if(position === "TOP") {
+					gameDurationArrayTop.push(info.gameDuration);
+					console.log("ADDING TO GAMES ARRRAY DURATION TOP", gameDurationArrayTop)
+				}
+
+				if(position === "JUNGLE") {
+					gameDurationArrayJungle.push(info.gameDuration);
+				}
+
+				if(position === "SUPPORT") {
+					gameDurationArraySupport.push(info.gameDuration);
+				}
+
+				if(position === "ADC") {
+					gameDurationArrayAdc.push(info.gameDuration);
+					console.log("ADDING TO GAMES ARRRAY DURATION ADC", gameDurationArrayAdc)
 				}
 
 				info.participantIdentities.find(element => {
@@ -240,6 +402,7 @@ app.get('/', (req, res) => {
 				});
 
 
+				console.log("PARTICIPANT LENGTH", info.participants.length)
 				// Get kills deaths assists
 				info.participants.find(element => {
 					if(element.participantId === participantId) {
@@ -251,6 +414,37 @@ app.get('/', (req, res) => {
 							deathsArrayMid.push(element.stats.deaths);
 							assistsArrayMid.push(element.stats.assists);	
 							totalDamageDealtToChampionsArrayMid.push(element.stats.totalDamageDealtToChampions);
+						}
+
+						console.log("ELEMENT STATS KILLS ", element.stats.kills)
+						console.log("ELEMENT STATS KILLS POSITION ", position)
+
+						if(position === "TOP") {
+							killsArrayTop.push(element.stats.kills);
+							deathsArrayTop.push(element.stats.deaths);
+							assistsArrayTop.push(element.stats.assists);	
+							totalDamageDealtToChampionsArrayTop.push(element.stats.totalDamageDealtToChampions);
+						}
+
+						if(position === "JUNGLE") {
+							killsArrayJungle.push(element.stats.kills);
+							deathsArrayJungle.push(element.stats.deaths);
+							assistsArrayJungle.push(element.stats.assists);	
+							totalDamageDealtToChampionsArrayTop.push(element.stats.totalDamageDealtToChampions);
+						}
+
+						if(position === "SUPPORT") {
+							killsArraySupport.push(element.stats.kills);
+							deathsArraySupport.push(element.stats.deaths);
+							assistsArraySupport.push(element.stats.assists);	
+							totalDamageDealtToChampionsArraySupport.push(element.stats.totalDamageDealtToChampions);
+						}
+
+						if(position === "ADC") {
+							killsArrayAdc.push(element.stats.kills);
+							deathsArrayAdc.push(element.stats.deaths);
+							assistsArrayAdc.push(element.stats.assists);	
+							totalDamageDealtToChampionsArrayAdc.push(element.stats.totalDamageDealtToChampions);
 						}
 
 						if(position === "ALL") {
@@ -272,8 +466,20 @@ app.get('/', (req, res) => {
 							if(position === "MID") {
 								creepScoreArrayMid.push(element.timeline.creepsPerMinDeltas[objKey]);
 							}
+							if(position === "TOP") {
+								creepScoreArrayTop.push(element.timeline.creepsPerMinDeltas[objKey]);
+							}
 							if(position === "ALL") {
 								creepScoreArray.push(element.timeline.creepsPerMinDeltas[objKey]);
+							}
+							if(position === "JUNGLE") {
+								creepScoreArrayJungle.push(element.timeline.creepsPerMinDeltas[objKey]);
+							}
+							if(position === "SUPPORT") {
+								creepScoreArraySupport.push(element.timeline.creepsPerMinDeltas[objKey]);
+							}
+							if(position === "ADC") {
+								creepScoreArrayAdc.push(element.timeline.creepsPerMinDeltas[objKey]);
 							}
 
 						} else {
@@ -282,30 +488,71 @@ app.get('/', (req, res) => {
 
 						if(position === "ALL") {
 							if(totalGames === killsArray.length){
-
-								//									console.log("GET ONE MATCH ALL DATA DONE")								
-								//									console.log("CALLLLLLLLLLLL    LLLLLL   LLLLLLLLLLLLLLLLLLLLLLLL")
-
-
 								getOneMatchDataDoneAll = true;
 								checkValue();
 							}
 						}
 
 						// COULD BE ERROR WHAT IS TOTAL GAMES HERE???????????????
+						console.log("INSIDE callbackGetOneMatchNew find participants")
+
 						if(position === "MID") {
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS MIDDDDDDDDD", totalGames, killsArrayMid.length)
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS midMatches.length", midMatches.length, killsArrayMid.length)
+
 							if(totalGames === killsArrayMid.length){	
-
-								console.log("YO BITA BOIIIIIII ")
-								console.log("CALLLLLLLLLLLL    LLLLLL   LLLLLLLLLLLLLLLLLLLLLLLL 22222")
-
-								getOneMatchMidDataDone = true;
+								console.log("MID FINISHED ////////// MID FINSIHED //////// MID FINSHED");
+								getOneMatchDataDoneMid = true;
 								checkValue2();
 							}
 						}
 
-						console.log("KAM", killsArrayMid)
-						console.log("GDA", gameDurationArrayMid)
+						// COULD BE ERROR WHAT IS TOTAL GAMES HERE???????????????
+
+						if(position === "TOP") {
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS TOPPPPPPPPPPPP", totalGames, killsArrayTop.length)
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS topMatches.length", topMatches.length, killsArrayTop.length)
+
+							if(totalGames === killsArrayTop.length){	
+								getOneMatchDataDoneTop = true;
+								checkValue3();
+							}
+						}
+
+						if(position === "JUNGLE") {
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS JUNGLE", totalGames, killsArrayJungle.length)
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS jungleMatches.length", jungleMatches.length, killsArrayJungle.length)
+
+							if(totalGames === killsArrayJungle.length){	
+								getOneMatchDataDoneJungle = true;
+								checkValue4();
+							}
+						}
+
+						if(position === "SUPPORT") {
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS SUPPPORTT", totalGames, killsArraySupport.length)
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS SUPORTTTTTT.length", supportMatches.length, killsArraySupport.length)
+
+							if(totalGames === killsArraySupport.length){	
+								getOneMatchDataDoneSupport = true;
+								checkValue6();
+							}
+						}
+
+						if(position === "ADC") {
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS ADCCCCCCCC", totalGames, killsArrayAdc.length)
+							console.log("TOTALLLLLLLLLLLL GAMESSSSSSSSS ADCCCCMatches.length", topMatches.length, killsArrayAdc.length)
+
+							if(totalGames === killsArrayAdc.length){	
+								getOneMatchDataDoneAdc = true;
+								checkValue5();
+							}
+						}
+
+						console.log("KAM Leng", killsArrayMid.length)
+						console.log("KAMT", killsArrayTop)
+						console.log("GDA MID", gameDurationArrayMid)
+						console.log("GDA TOP", gameDurationArrayTop)
 						console.log("KA", killsArray);
 						console.log("Total Games", totalGames);
 					}	
@@ -319,41 +566,138 @@ app.get('/', (req, res) => {
 
 
 		if(position === "MID") {
-			position = "MID";
-			positionMod = "Mid";
+			position = "MID";		
 			info = midMatches;
 			//			console.log("MiDMATCHES", midMatches)
 			//			console.log("pos", position)
+
+			if(info.length === 0) {
+				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 1")
+				getOneMatchDataDoneMid = true;
+				winLoseArrayMidDone = true;
+				checkValue2();
+				return;
+				// this return value took you hours to add
+				// this is what stops the current getPositionValues("MID") function running that was causing all sorts
+				// of problems as you start running getPositionValues("TOP") here and they run beside each other and mess 
+				// up your data
+				// USE THE DEBUGGER 
+				// all these console.logs kill me. And this bug could have not been found without it.
+			}
 		}
 
 		if(position === "ALL") {
-			position = "ALL";
-			positionMod = "All";
+			position = "ALL";	
 			info = allMatches;
 			//			console.log("MiDMATCHES", midMatches)
 			//			console.log("pos", position)
 		}
 
+		//		console.log("POSITRIONNNNNNNNNNNNNNNN POSITION POSITION", position)
+
+		if(position === "TOP") {
+			position = "TOP";		
+			info = topMatches;
+
+			console.log("ZEROOOOOOOOOOOOOOOOOOOOOOOOOOO MATCHES TOPPPPPPPP ZERO", info.length)
+
+			if(info.length === 0) {
+				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 3")
+				getOneMatchDataDoneTop = true;
+				winLoseArrayTopDone = true;
+				checkValue3();
+				return;
+			}
+		}
+
+		if(position === "JUNGLE") {
+			position = "JUNGLE";		
+			info = jungleMatches;
+
+			console.log("ZEROOOOOOOOOOOOOOOOOOOOOOOOOOO MATCHES JUNGLEEEEEE ZERO", info.length)
+
+			if(info.length === 0) {
+				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 4")
+				getOneMatchDataDoneJungle = true;
+				winLoseArrayJungleDone = true;
+				checkValue4();
+				return;
+			}
+		}
+
+		if(position === "SUPPORT") {
+			position = "SUPPORT";		
+			info = supportMatches;
+
+			console.log("ZEROOOOOOOOOOOOOOOOOOOOOOOOOOO MATCHES SUPPORTT ZERO", info.length)
+
+			if(info.length === 0) {
+				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 6")
+				getOneMatchDataDoneSupport = true;
+				winLoseArraySupportDone = true;
+				checkValue6();
+				return;
+			}
+		}
+
+		// MIGHT DO THIS FOR ALLL OF THESE 
+
+		if(position === "ADC") {
+			position = "ADC";		
+			info = adcMatches;
+
+			console.log("ZEROOOOOOOOOOOOOOOOOOOOOOOOOOO MATCHES ADCCCCCC ZERO", info.length)
+
+			if(info.length === 0) {
+				console.log("CALLLLLLLLLLLLLLLLLLLL CHECKVALUE 5")
+				getOneMatchDataDoneAdc = true;
+
+				// SAYING WIN LOSE ARRAY COMPLETE AS IT IS EMPTY DO FOR ALLL ?????????????????????
+				winLoseArrayAdcDone = true;
+				checkValue5();
+				return;
+			}
+		}
+
 		matchCount2 = 0;
 
 		totalGames = info.length;
+
+		//		if(totalGames = 0) {
+		//			console.log("ZEROOOOOOOOOOOOOOOOOO GAMESSSSSSSSS")
+		//			console.log("POSITRINNNN POSITION POSITION IN in in", position)
+		//			if(position === "TOP") {
+		//				console.log("DKDDJIDODKIODINODNODNODND")
+		//			}
+		//		}
 		//	manyValues["totalGames"] = info.totalGames;		
 		console.log("TG", totalGames)
+
 
 		var interval = 60; // how much time should the delay between two iterations be (in milliseconds)?
 		var promise = Promise.resolve();
 
-		//		console.log("INFO", info)
+		console.log("INFO", info)
 
-		info.forEach(element => {
+		//		var counterNew = 1;
+
+		await info.forEach(element => {
 
 			promise = promise.then(function () {				
 				//				console.log("Match Count rb", matchCount);
 				//				console.log("info", info)			
 				//				console.log("info each", info[matchCount])			
 
-				matchInfo = info[matchCount2];
-				gameId = info[matchCount2].gameId;
+				console.log("Match Count2 This Loop", matchCount2);
+
+				console.log("SPLIT /////////////// SPLIT");
+
+				console.log("CURRENT ELEMNT", element)
+				console.log("GAME ID", element.gameId)
+
+				matchInfo = element;
+				gameId = element.gameId;
+
 
 				if (position === "MID") {
 					championIdArrayMid.push(element.champion);
@@ -361,38 +705,34 @@ app.get('/', (req, res) => {
 				if (position === "ALL") {
 					championIdArray.push(element.champion);
 				}
+				if (position === "TOP") {
+					championIdArrayTop.push(element.champion);
+				}
+				if (position === "JUNGLE") {
+					championIdArrayJungle.push(element.champion);
+				}
+				if (position === "SUPPORT") {
+					championIdArraySupport.push(element.champion);
+				}
+				if (position === "ADC") {
+					championIdArrayAdc.push(element.champion);
+				}
 
 				let optionsGetOneMatch = {
 					url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
 				};			
 
-
-				async function callFunction() {
-					console.log("START  INSIDE GETPOSITIONVALUE")					
-					request(optionsGetOneMatch, callbackGetOneMatchNew);
-					console.log("END INSIDE GETPOSITIONVALUE")
-					matchCount2++;
+				console.log("START  INSIDE GETPOSITIONVALUE")					
+				request(optionsGetOneMatch, callbackGetOneMatchNew);
+				console.log("END INSIDE GETPOSITIONVALUE")
 
 
-					if(matchCount2 === totalGames) {
-						console.log("TOTAL REACHED DO THE THING NOW")
-
-						// might be rubbish
-						if(position === "ALL") {
-							allDataLoadedTrueFalse = true;
-						}					
-
-						if(position === "MID") {
-							midDataLoadedTrueFalse = true;
-						}
-
-
-					}
-
+				if(matchCount2 === totalGames) {
+					console.log("TOTAL REACHED DO THE THING NOW")
 				}
 
-				callFunction();
-				console.log("Match Count2", matchCount2);
+				matchCount2++;				
+
 
 				return new Promise(function (resolve) {
 					setTimeout(resolve, interval);
@@ -402,7 +742,7 @@ app.get('/', (req, res) => {
 
 		let jesusVar = "jesus";
 		console.log("ENDING GET POSITION VALUES");
-		return jesusVar;
+//		return jesusVar;
 	}
 
 
@@ -417,13 +757,13 @@ app.get('/', (req, res) => {
 
 		// ALL DATA SHOULD BE LOADED WHEN THIS FUCNTION IS CALLED
 
-		function getWinPercentageAll() {
+		function getWinPercentage(arrayOfGamesWinLOss, winPercentageVariable, manyValuesPos) {
 			let gamesWinCounter = 0;
 			var gameCounter = 0;
 
-			console.log("start win P")
-			console.log(winLoseArray)
-			winLoseArray.forEach(element => {
+			console.log("WIN LOSE ", arrayOfGamesWinLOss);
+
+			arrayOfGamesWinLOss.forEach(element => {
 				if(element.resultToReturn === "Win") {
 					gamesWinCounter++	
 					gameCounter++;
@@ -432,47 +772,29 @@ app.get('/', (req, res) => {
 				}
 			})
 
+			console.log("COUNTRRD ADOIH  COUNTERS", gamesWinCounter, gameCounter)
+
 			// used to make sure all games were loaded in the array
-			if(gameCounter === winLoseArray.length) {
-				console.log(gamesWinCounter)
-				console.log(winLoseArray.length)
-				winPercentage = gamesWinCounter / winLoseArray.length;
-				winPercentage = winPercentage * 100;
-				winPercentage = winPercentage.toFixed(0);
-				manyValues["winP"] = winPercentage;
-				console.log("END win P", winPercentage)
+			if(gameCounter === arrayOfGamesWinLOss.length) {
+				winPercentageVariable = gamesWinCounter / arrayOfGamesWinLOss.length;
+				winPercentageVariable = winPercentageVariable * 100;
+				winPercentageVariable = winPercentageVariable.toFixed(0);
+				manyValuesPos["winP"] = winPercentageVariable;
 			}
 		}
 
 
-		function getWinPercentageMid() {
-			let gamesWinCounter = 0;
-			var gameCounter = 0;
 
-			console.log("WIN LOSE MIDDDDDDDDDDDDDDDDDDDDDDDDDDDD", winLoseArrayMid);
+		getWinPercentage(winLoseArrayMid, winPercentageMid, manyValuesMid)
+		getWinPercentage(winLoseArrayTop, winPercentageTop, manyValuesTop)
+		getWinPercentage(winLoseArrayAdc, winPercentageAdc, manyValuesAdc)
+		getWinPercentage(winLoseArray, winPercentage, manyValues)
+		getWinPercentage(winLoseArraySupport, winPercentageSupport, manyValuesSupport)
+		getWinPercentage(winLoseArrayJungle, winPercentageJungle, manyValuesJungle)
 
-			winLoseArrayMid.forEach(element => {
-				if(element.resultToReturn === "Win") {
-					gamesWinCounter++	
-					gameCounter++;
-				} else {
-					gameCounter++;
-				}
-			})
-
-			console.log("COUNTRRD ADOIH    COUNTERS", gamesWinCounter, gameCounter)
-
-			// used to make sure all games were loaded in the array
-			if(gameCounter === winLoseArrayMid.length) {
-				winPercentageMid = gamesWinCounter / winLoseArrayMid.length;
-				winPercentageMid = winPercentageMid * 100;
-				winPercentageMid = winPercentageMid.toFixed(0);
-				manyValuesMid["winP"] = winPercentageMid;
-			}
-		}
-
-		getWinPercentageAll()		
-		getWinPercentageMid()
+		//		getWinPercentageAll()		
+		//		getWinPercentageMid()
+		//		getWinPercentageTop()
 
 
 
@@ -508,15 +830,39 @@ app.get('/', (req, res) => {
 		manyValuesMid["averageAssists"] = (arrSum(assistsArrayMid)/ killsArrayMid.length).toFixed(1);
 		manyValuesMid["averageDeaths"] = (arrSum(deathsArrayMid)/ killsArrayMid.length).toFixed(1);
 
+		manyValuesAdc["averageKills"] = (arrSum(killsArrayAdc)/ killsArrayAdc.length).toFixed(1);
+		manyValuesAdc["averageAssists"] = (arrSum(assistsArrayAdc)/ killsArrayAdc.length).toFixed(1);
+		manyValuesAdc["averageDeaths"] = (arrSum(deathsArrayAdc)/ killsArrayAdc.length).toFixed(1);
+
+		manyValuesSupport["averageKills"] = (arrSum(killsArraySupport)/ killsArraySupport.length).toFixed(1);
+		manyValuesSupport["averageAssists"] = (arrSum(assistsArraySupport)/ killsArraySupport.length).toFixed(1);
+		manyValuesSupport["averageDeaths"] = (arrSum(deathsArraySupport)/ killsArraySupport.length).toFixed(1);
+
+		manyValuesJungle["averageKills"] = (arrSum(killsArrayJungle)/ killsArrayJungle.length).toFixed(1);
+		manyValuesJungle["averageAssists"] = (arrSum(assistsArrayJungle)/ killsArrayJungle.length).toFixed(1);
+		manyValuesJungle["averageDeaths"] = (arrSum(deathsArrayJungle)/ killsArrayJungle.length).toFixed(1);
+
+		manyValuesTop["averageKills"] = (arrSum(killsArrayTop)/ killsArrayTop.length).toFixed(1);
+		manyValuesTop["averageAssists"] = (arrSum(assistsArrayTop)/ killsArrayTop.length).toFixed(1);
+		manyValuesTop["averageDeaths"] = (arrSum(deathsArrayTop)/ killsArrayTop.length).toFixed(1);
+
 		//	averageKda = (arrSum(killsArray) + arrSum(assistsArray))/ arrSum(deathsArray);
 
 		manyValues["KDAaverage"] = ((arrSum(killsArray) + arrSum(assistsArray)) / arrSum(deathsArray)).toFixed(2);;
-		manyValuesMid["KDAaverage"] = ((arrSum(killsArrayMid) + arrSum(assistsArrayMid)) / arrSum(deathsArrayMid)).toFixed(2);;
+		manyValuesMid["KDAaverage"] = ((arrSum(killsArrayMid) + arrSum(assistsArrayMid)) / arrSum(deathsArrayMid)).toFixed(2);
+		manyValuesSupport["KDAaverage"] = ((arrSum(killsArraySupport) + arrSum(assistsArraySupport)) / arrSum(deathsArraySupport)).toFixed(2);
+		manyValuesJungle["KDAaverage"] = ((arrSum(killsArrayJungle) + arrSum(assistsArrayJungle)) / arrSum(deathsArrayJungle)).toFixed(2);
+		manyValuesTop["KDAaverage"] = ((arrSum(killsArrayTop) + arrSum(assistsArrayTop)) / arrSum(deathsArrayTop)).toFixed(2);
+		manyValuesAdc["KDAaverage"] = ((arrSum(killsArrayAdc) + arrSum(assistsArrayAdc)) / arrSum(deathsArrayAdc)).toFixed(2);
 
 
 
 		manyValues["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArray);
 		manyValuesMid["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArrayMid);
+		manyValuesAdc["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArrayAdc);
+		manyValuesSupport["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArraySupport);
+		manyValuesJungle["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArrayJungle);
+		manyValuesTop["totalDamageDealtToChampions"] = arrSum(totalDamageDealtToChampionsArrayTop);
 
 
 		manyValues["kills"] = arrSum(killsArray);
@@ -526,15 +872,39 @@ app.get('/', (req, res) => {
 		manyValuesMid["kills"] =  arrSum(killsArrayMid);
 		manyValuesMid["assists"] = arrSum(assistsArrayMid);
 		manyValuesMid["deaths"] = arrSum(deathsArrayMid);
-		
+
+		manyValuesTop["kills"] =  arrSum(killsArrayTop);
+		manyValuesTop["assists"] = arrSum(assistsArrayTop);
+		manyValuesTop["deaths"] = arrSum(deathsArrayTop);
+
+		manyValuesJungle["kills"] =  arrSum(killsArrayJungle);
+		manyValuesJungle["assists"] = arrSum(assistsArrayJungle);
+		manyValuesJungle["deaths"] = arrSum(deathsArrayJungle);
+
+		manyValuesSupport["kills"] =  arrSum(killsArraySupport);
+		manyValuesSupport["assists"] = arrSum(assistsArraySupport);
+		manyValuesSupport["deaths"] = arrSum(deathsArraySupport);
+
+		manyValuesAdc["kills"] =  arrSum(killsArrayAdc);
+		manyValuesAdc["assists"] = arrSum(assistsArrayAdc);
+		manyValuesAdc["deaths"] = arrSum(deathsArrayAdc);
+
 
 		manyValuesMid["totalGames"] = killsArrayMid.length;
+		manyValuesTop["totalGames"] = killsArrayTop.length;
+		manyValuesAdc["totalGames"] = killsArrayAdc.length;
+		manyValuesSupport["totalGames"] = killsArraySupport.length;
+		manyValuesJungle["totalGames"] = killsArrayJungle.length;
 
 
 		//		let creepScoreAverage = arrSum(creepScoreArray) / creepScoreArray.length * 10;	
 		//		creepScoreAverage = creepScoreAverage.toFixed(0);
 		manyValues["creepScore010"] = (arrSum(creepScoreArray) / creepScoreArray.length * 10).toFixed(0);
 		manyValuesMid["creepScore010"] = (arrSum(creepScoreArrayMid) / creepScoreArrayMid.length * 10).toFixed(0);
+		manyValuesJungle["creepScore010"] = (arrSum(creepScoreArrayJungle) / creepScoreArrayJungle.length * 10).toFixed(0);
+		manyValuesAdc["creepScore010"] = (arrSum(creepScoreArrayAdc) / creepScoreArrayAdc.length * 10).toFixed(0);
+		manyValuesSupport["creepScore010"] = (arrSum(creepScoreArraySupport) / creepScoreArraySupport.length * 10).toFixed(0);
+		manyValuesTop["creepScore010"] = (arrSum(creepScoreArrayTop) / creepScoreArrayTop.length * 10).toFixed(0);
 
 
 
@@ -542,6 +912,10 @@ app.get('/', (req, res) => {
 		//		var gameDurationSum = arrSum(gameDurationArray) * 1000;						
 		manyValues["timePlayed"] = msToTime( arrSum(gameDurationArray) * 1000);
 		manyValuesMid["timePlayed"] = msToTime( arrSum(gameDurationArrayMid) * 1000);
+		manyValuesTop["timePlayed"] = msToTime( arrSum(gameDurationArrayTop) * 1000);
+		manyValuesJungle["timePlayed"] = msToTime( arrSum(gameDurationArrayJungle) * 1000);
+		manyValuesSupport["timePlayed"] = msToTime( arrSum(gameDurationArraySupport) * 1000);
+		manyValuesAdc["timePlayed"] = msToTime( arrSum(gameDurationArrayAdc) * 1000);
 
 
 
@@ -550,9 +924,12 @@ app.get('/', (req, res) => {
 		console.log("IIIIIIIIIIIIII GOT HERE 10");
 		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArray), "ALL");
 		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "MID");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "JUNGLE");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "SUPPORT");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "ADC");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "TOP");
 		console.log("Loaded champions");
 
-		console.log(manyValues)
 		console.log(manyValues)
 
 
@@ -610,7 +987,7 @@ app.get('/', (req, res) => {
 	var position = "def";
 	const apiKey = apikey;
 	//	let accountName = "Top%209th%20Sup%20LFL2";
-	let accountName = "dacurrymonster";
+	let accountName = "hazouzo";
 	//	let accountName = "hide on bush";
 	let accountId;
 	let id;
@@ -708,6 +1085,10 @@ app.get('/', (req, res) => {
 	// winP, gamesPlayed, 
 	let manyValues = {};
 	let manyValuesMid = {};
+	let manyValuesTop = {};
+	let manyValuesJungle = {};
+	let manyValuesAdc = {};
+	let manyValuesSupport = {};
 
 
 	//	let optionsGetName = {
@@ -731,10 +1112,12 @@ app.get('/', (req, res) => {
 
 
 
-
 	let winPercentage = 0;
-
-
+	let winPercentageMid = 0;
+	let winPercentageJungle = 0;
+	let winPercentageTop = 0;
+	let winPercentageSupport = 0;
+	let winPercentageAdc = 0;
 
 
 
@@ -988,30 +1371,118 @@ app.get('/', (req, res) => {
 
 	startEverything();
 
+	let midFuncRun;
+	let topFuncRun;
+	let jungleFuncRun;
+	let adcFuncRun;
+	let supportFuncRun;
+
 
 	async function checkValue() {
 		if(getOneMatchDataDoneAll === true && winLoseArrayDoneAll === true) {
 			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+			midFuncRun = false;
 			getPositionValues("MID");
 
-			//			await finaliseData();
-			//			res.render('index', {manyValues: manyValues })
+
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT", getOneMatchDataDoneAll, winLoseArrayDoneAll)
+			console.log("ITS NOTTTTTTTTTTTTTTTT ONE ALL", getOneMatchDataDoneAll, winLoseArrayDoneAll)
 		}
 	}
 
+	//	console.log("TRUE OF FALSE LDK DKF J DJD JD OUTRSIDE", midFuncRun );
+
 	async function checkValue2() {
-		if(getOneMatchMidDataDone === true && winLoseArrayMidDone === true) {
+		if(getOneMatchDataDoneMid === true && winLoseArrayMidDone === true && midFuncRun === false) {
 			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 222222222" );
+			console.log("midFuncRun", midFuncRun)
+			midFuncRun = true;
+			topFuncRun = false;
+			console.log("STARTING TOP STARTING TOP STARTING TOP STARTING TOP STARTING TOP STARTING TOP" );
 			//			getPositionValues("MID");
+			position = "TOP";
+			await getPositionValues("TOP");
+
+
+		} else {
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT TWO MIDDDDDD", getOneMatchDataDoneMid, winLoseArrayMidDone)
+		}
+	}
+
+
+	async function checkValue3() {
+		if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true && topFuncRun === false) {
+			//			if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true) {
+			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 33333333" );
+			jungleFuncRun = false;
+			topFuncRun = true;
+			console.log("STARTING JUNGLE STARTING JUNGLE STARTING JUNGLE STARTING JUNGLE STARTING JUNGLE STARTING JUNGLJUNGLEJUNGLEJUNGLEJUNGLEJUNGLEE" );
+
+			//			getPositionValues("MID");
+			//			await getPositionValues("TOP");
+
+			await getPositionValues("JUNGLE");
+
+			//			await finaliseData();
+
+
+
+		} else {
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT THREE TOPPP", getOneMatchDataDoneTop, winLoseArrayTopDone)
+		}
+	}
+
+	async function checkValue4() {
+		if(getOneMatchDataDoneJungle === true && winLoseArrayJungleDone === true && jungleFuncRun === false ) {
+			//			if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true) {
+			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 44444444" );
+
+
+
+			jungleFuncRun = true;
+			adcFuncRun = false;
+
+			await getPositionValues("ADC");
+
+
+		} else {
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT FOUR JUNGLEEEEEEE", getOneMatchDataDoneJungle, winLoseArrayJungleDone)
+		}
+	}
+
+	async function checkValue5() {
+		if(getOneMatchDataDoneAdc === true && winLoseArrayAdcDone === true && adcFuncRun === false ) {
+			//			if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true) {
+			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 55555555555" );
+
+
+
+			adcFuncRun = true;
+			supportFuncRun = false;
+
+			await getPositionValues("SUPPORT");
+
+
+		} else {
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT FOUR ADCCCCCCCCCC", getOneMatchDataDoneAdc, winLoseArrayAdcDone, adcFuncRun)
+		}
+	}
+
+	async function checkValue6() {
+		if(getOneMatchDataDoneSupport === true && winLoseArraySupportDone === true && supportFuncRun === false ) {
+			//			if(getOneMatchDataDoneTop === true && winLoseArrayTopDone === true) {
+			console.log("ITS TIME TO GOOOOOOOOOOOOOOOOOOOOOOOOOOO 6666666666" );
+			console.log("WE MADE ITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT YEWAH               WE MADE ITTTTTTTTTTTTTTTTTTTTTTT" );
+
+			supportFuncRun = true;
 
 			await finaliseData();
 
-			console.log(manyValuesMid);
-			res.render('index', {manyValues: manyValues, manyValuesMid: manyValuesMid })
+			res.render('index', {manyValues: manyValues, manyValuesMid: manyValuesMid, manyValuesTop: manyValuesTop, manyValuesJungle: manyValuesJungle, manyValuesSupport: manyValuesSupport, manyValuesAdc: manyValuesAdc})
+
+
 		} else {
-			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT", getOneMatchDataDoneAll, winLoseArrayDoneAll)
+			console.log("ITS NOTTTTTTTTTTTTTTTTTTTTTTTTTTT FOUR SUPORTTTTTTTTTT", getOneMatchDataDoneSupport, winLoseArraySupportDone)
 		}
 	}
 
