@@ -136,109 +136,283 @@
 			</div>
 
 
-			<span class="row__title">Win Percentage</span><span class="row__value"><%= manyValuesMid.winP + "%"%></span>
-			<span class="row__value__kills"><%= manyValuesMid.kills %><span class="row__value__slash">/</span></span>
+			<div class="wrapper">
+
+				<div>
+					<div class="position-title">Top</div>
+
+					<div class="row">
+						<span class="row__title">Games Played</span><span class="row__value--position"><%= manyValuesTop.totalGames %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Win Percentage</span><span class="row__value--position"><%= manyValuesTop.winP + "%"%></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Most Played Champion</span><span class="row__value--position"><%= manyValuesTop.mostPlayedChampion %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesTop.kills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesTop.deaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesTop.assists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA Average</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesTop.averageKills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesTop.averageDeaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesTop.averageAssists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA ratio</span>
+						<span class="row__value--position"><%= manyValuesTop.KDAaverage %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Time Played</span><span class="row__value--position"><%= manyValuesTop.timePlayed %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Average Creep Score</span>
+						<span class="row__value--position"><%= manyValuesTop.creepScore010 %><span class="row__value--small"> first 10min</span> </span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Damage To Champions</span>
+						<span class="row__value--position"><%= manyValuesTop.totalDamageDealtToChampions %></span>
+					</div>
+				</div>
+
+				<div>
+					<div class="position-title">Mid</div>
+
+					<div class="row">
+						<span class="row__title">Games Played</span><span class="row__value--position"><%= manyValuesMid.totalGames %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Win Percentage</span><span class="row__value--position"><%= manyValuesMid.winP + "%"%></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Most Played Champion</span><span class="row__value--position"><%= manyValuesMid.mostPlayedChampion %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesMid.kills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesMid.deaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesMid.assists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA Average</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesMid.averageKills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesMid.averageDeaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesMid.averageAssists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA ratio</span>
+						<span class="row__value--position"><%= manyValuesMid.KDAaverage %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Time Played</span><span class="row__value--position"><%= manyValuesMid.timePlayed %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Average Creep Score</span>
+						<span class="row__value--position"><%= manyValuesMid.creepScore010 %><span class="row__value--small"> first 10min</span> </span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Damage To Champions</span>
+						<span class="row__value--position"><%= manyValuesMid.totalDamageDealtToChampions %></span>
+					</div>
+				</div>
+
+				<div>
+					<div class="position-title">Jungle</div>
+
+					<div class="row">
+						<span class="row__title">Games Played</span><span class="row__value--position"><%= manyValuesJungle.totalGames %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Win Percentage</span><span class="row__value--position"><%= manyValuesJungle.winP + "%"%></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Most Played Champion</span><span class="row__value--position"><%= manyValuesJungle.mostPlayedChampion %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesJungle.kills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesJungle.deaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesJungle.assists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA Average</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesJungle.averageKills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesJungle.averageDeaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesJungle.averageAssists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA ratio</span>
+						<span class="row__value--position"><%= manyValuesJungle.KDAaverage %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Time Played</span><span class="row__value--position"><%= manyValuesJungle.timePlayed %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Average Creep Score</span>
+						<span class="row__value--position"><%= manyValuesJungle.creepScore010 %><span class="row__value--small"> first 10min</span> </span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Damage To Champions</span>
+						<span class="row__value--position"><%= manyValuesJungle.totalDamageDealtToChampions %></span>
+					</div>
+				</div>
+
+				<div>
+					<div class="position-title">Adc</div>
+
+					<div class="row">
+						<span class="row__title">Games Played</span><span class="row__value--position"><%= manyValuesAdc.totalGames %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Win Percentage</span><span class="row__value--position"><%= manyValuesAdc.winP + "%"%></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Most Played Champion</span><span class="row__value--position"><%= manyValuesAdc.mostPlayedChampion %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesAdc.kills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesAdc.deaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesAdc.assists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA Average</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesAdc.averageKills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesAdc.averageDeaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesAdc.averageAssists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA ratio</span>
+						<span class="row__value--position"><%= manyValuesAdc.KDAaverage %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Time Played</span><span class="row__value--position"><%= manyValuesAdc.timePlayed %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Average Creep Score</span>
+						<span class="row__value--position"><%= manyValuesAdc.creepScore010 %><span class="row__value--small"> first 10min</span> </span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Damage To Champions</span>
+						<span class="row__value--position"><%= manyValuesAdc.totalDamageDealtToChampions %></span>
+					</div>
+				</div>
+
+				<% if(manyValuesSupport.totalGames === 0) { %>
+				
+				<% } else { %>
+				<div>
+					<div class="position-title">Support</div>
+
+					<div class="row">
+						<span class="row__title">Games Played</span><span class="row__value--position"><%= manyValuesSupport.totalGames %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Win Percentage</span><span class="row__value--position"><%= manyValuesSupport.winP + "%"%></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Most Played Champion</span><span class="row__value--position"><%= manyValuesSupport.mostPlayedChampion %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesSupport.kills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesSupport.deaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesSupport.assists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA Average</span>
+						<span class="row__value--position">
+							<span class="row__value__kills"><%= manyValuesSupport.averageKills %><span class="row__value__slash">/</span></span>			
+							<span class="row__value__deaths"><%= manyValuesSupport.averageDeaths%><span class="row__value__slash">/</span></span>	
+							<span class="row__value__assists"><%= manyValuesSupport.averageAssists %></span>	
+						</span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">KDA ratio</span>
+						<span class="row__value--position"><%= manyValuesSupport.KDAaverage %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Time Played</span><span class="row__value--position"><%= manyValuesSupport.timePlayed %></span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Average Creep Score</span>
+						<span class="row__value--position"><%= manyValuesSupport.creepScore010 %><span class="row__value--small"> first 10min</span> </span>
+					</div>
+
+					<div class="row">
+						<span class="row__title">Damage To Champions</span>
+						<span class="row__value--position"><%= manyValuesSupport.totalDamageDealtToChampions %></span>
+					</div>
+				</div>
+    <% } %>
+
+
+			</div>
 
 
 
 			<p class="riotText">Leauge Weekly isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
-
-
-
-
-
-
-
-			<div class="row">
-				<span class="row__title">Games Played</span><span class="row__value"><%= manyValuesMid.totalGames %></span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">Win Percentage</span><span class="row__value"><%= manyValuesMid.winP + "%"%></span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">Most Played Champion</span><span class="row__value"><%= manyValuesMid.mostPlayedChampion %></span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">KDA</span>
-				<span class="row__value">
-					<span class="row__value__kills"><%= manyValuesMid.kills %><span class="row__value__slash">/</span></span>			
-					<span class="row__value__deaths"><%= manyValuesMid.deaths%><span class="row__value__slash">/</span></span>	
-					<span class="row__value__assists"><%= manyValuesMid.assists %></span>	
-				</span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">KDA Average</span>
-				<span class="row__value">
-					<span class="row__value__kills"><%= manyValuesMid.averageKills %><span class="row__value__slash">/</span></span>			
-					<span class="row__value__deaths"><%= manyValuesMid.averageDeaths%><span class="row__value__slash">/</span></span>	
-					<span class="row__value__assists"><%= manyValuesMid.averageAssists %></span>	
-				</span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">KDA ratio</span>
-				<span class="row__value"><%= manyValuesMid.KDAaverage %></span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">Time Played</span><span class="row__value"><%= manyValuesMid.timePlayed %></span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">Average Creep Score</span>
-				<span class="row__value"><%= manyValuesMid.creepScore010 %><span class="row__value--small"> first 10min</span> </span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">Damage To Champions</span>
-				<span class="row__value"><%= manyValuesMid.totalDamageDealtToChampions %></span>
-			</div>
-
-
-
-
-
-
-			<div class="row">
-				<span class="row__title">KDA TOP</span>
-				<span class="row__value">
-					<span class="row__value__kills"><%= manyValuesTop.kills %><span class="row__value__slash">/</span></span>			
-					<span class="row__value__deaths"><%= manyValuesTop.deaths%><span class="row__value__slash">/</span></span>	
-					<span class="row__value__assists"><%= manyValuesTop.assists %></span>	
-				</span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">KDA Support</span>
-				<span class="row__value">
-					<span class="row__value__kills"><%= manyValuesSupport.kills %><span class="row__value__slash">/</span></span>			
-					<span class="row__value__deaths"><%= manyValuesSupport.deaths%><span class="row__value__slash">/</span></span>	
-					<span class="row__value__assists"><%= manyValuesSupport.assists %></span>	
-				</span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">KDA Adc</span>
-				<span class="row__value">
-					<span class="row__value__kills"><%= manyValuesAdc.kills %><span class="row__value__slash">/</span></span>			
-					<span class="row__value__deaths"><%= manyValuesAdc.deaths%><span class="row__value__slash">/</span></span>	
-					<span class="row__value__assists"><%= manyValuesAdc.assists %></span>	
-				</span>
-			</div>
-
-			<div class="row">
-				<span class="row__title">KDA Jungle</span>
-				<span class="row__value">
-					<span class="row__value__kills"><%= manyValuesJungle.kills %><span class="row__value__slash">/</span></span>			
-					<span class="row__value__deaths"><%= manyValuesJungle.deaths%><span class="row__value__slash">/</span></span>	
-					<span class="row__value__assists"><%= manyValuesJungle.assists %></span>	
-				</span>
-			</div>
-
 
 
 

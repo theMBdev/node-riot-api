@@ -924,10 +924,10 @@ app.get('/', (req, res) => {
 		console.log("IIIIIIIIIIIIII GOT HERE 10");
 		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArray), "ALL");
 		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "MID");
-		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "JUNGLE");
-		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "SUPPORT");
-		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "ADC");
-		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayMid), "TOP");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayJungle), "JUNGLE");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArraySupport), "SUPPORT");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayAdc), "ADC");
+		await getMostPlayedChampionName(getMostPlayedChampionId(championIdArrayTop), "TOP");
 		console.log("Loaded champions");
 
 		console.log(manyValues)
