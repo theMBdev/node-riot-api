@@ -12,7 +12,7 @@ body {
 
 .page-container {
 	width: 100%;
-	/*	background-color: antiquewhite;*/
+	/* background-color: antiquewhite; */
 	height: 100%;
 	position: relative;
 }
@@ -215,7 +215,7 @@ body {
 
 @media only screen and (max-width: 575px) {
 	body {
-		background-color: lightblue;
+/*		background-color: lightblue;*/
 	}
 
 	.wrapper {

@@ -1,19 +1,40 @@
 const express = require('express');
 const request = require("request-promise");
 const fetch = require('node-fetch');
+const nodemailer = require('nodemailer');
 const app = express();
 const ejs = require('ejs');
+var path = require('path');
 const port = 3000;
+
 
 var config = require('./config/config');
 apikey = config.apiKey;
+user = config.userId;
+pass = config.password;
 
 app.set('view engine', 'ejs');
+
 app.use(express.static(__dirname + '/public'));
+app.set('views', path.join(__dirname, '/views'));
+
+
+
+const transporter = nodemailer.createTransport({
+	host: 'smtp.mailtrap.io',
+	port: 2525,
+	secure: false,
+	auth: {
+		user: user, // mailtrap.io username
+		pass: pass  // mailtrap.io password
+	}
+});
+
 
 
 // routes
 app.get('/', (req, res) => {
+
 
 	var apiCalls = 0;
 
@@ -544,7 +565,7 @@ app.get('/', (req, res) => {
 							killsArrayJungle.push(element.stats.kills);
 							deathsArrayJungle.push(element.stats.deaths);
 							assistsArrayJungle.push(element.stats.assists);	
-							totalDamageDealtToChampionsArrayTop.push(element.stats.totalDamageDealtToChampions);
+							totalDamageDealtToChampionsArrayJungle.push(element.stats.totalDamageDealtToChampions);
 
 							killsArray.push(element.stats.kills);
 							deathsArray.push(element.stats.deaths);
@@ -1064,7 +1085,7 @@ app.get('/', (req, res) => {
 		};
 
 	}
-	
+
 
 
 
@@ -1196,9 +1217,9 @@ app.get('/', (req, res) => {
 
 	// each function will call the next when it is finished
 	async function getMidData() {		
-			console.log("Got All Data");
-			midFuncRun = false;
-			await getPositionValues("MID");		
+		console.log("Got All Data");
+		midFuncRun = false;
+		await getPositionValues("MID");		
 	}
 
 	async function getTopData() {
@@ -1254,7 +1275,44 @@ app.get('/', (req, res) => {
 			supportFuncRun = true;
 			await finaliseData();
 
-			res.render('index', {manyValues: manyValues, manyValuesMid: manyValuesMid, manyValuesTop: manyValuesTop, manyValuesJungle: manyValuesJungle, manyValuesSupport: manyValuesSupport, manyValuesAdc: manyValuesAdc})
+
+			
+			app.set('views', path.join(__dirname, '/emails'));
+
+
+			res.render('emailTemplate', {manyValues: manyValues, manyValuesMid: manyValuesMid, manyValuesTop: manyValuesTop, manyValuesJungle: manyValuesJungle, manyValuesSupport: manyValuesSupport, manyValuesAdc: manyValuesAdc})
+
+
+			// ejs rendering engine rendering email 
+			app.render('emailTemplate', {manyValues: manyValues, manyValuesMid: manyValuesMid, manyValuesTop: manyValuesTop, manyValuesJungle: manyValuesJungle, manyValuesSupport: manyValuesSupport, manyValuesAdc: manyValuesAdc}, function(err, html){ 
+				if (err) {
+					console.log('error rendering email template:', err) 
+					return
+				} else {
+					var mailOptions = {
+						from: 'noreply@*****.com',
+						to: 'john@snow.com',
+						subject: 'Verify Your Email',
+						generateTextFromHtml : true,
+						// pass the rendered html string in as your html 
+						html: html 
+					};
+
+					//Execute this to send the mail
+					transporter.sendMail(mailOptions, function(error, response){
+						if(error) {
+							console.log("error", error);
+							res.send('Mail Error! Try again')
+						} else {
+							console.log("Mail Sent", response);
+
+							res.send("Mail succesfully sent!")
+						}
+					});
+				} 
+			}); 
+
+
 		} else {
 			console.log("compileManyValuesData fail", getOneMatchDataDoneSupport, winLoseArraySupportDone)
 		}
