@@ -19,6 +19,8 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, '/views'));
 
 
+// TODO hook up amazon ses
+// https://nodemailer.com/transports/ses/#example-1
 
 const transporter = nodemailer.createTransport({
 	host: 'smtp.mailtrap.io',
@@ -1298,6 +1300,9 @@ app.get('/', (req, res) => {
 						html: html 
 					};
 
+//					location to view email
+//					https://mailtrap.io/inboxes/
+					
 					//Execute this to send the mail
 					transporter.sendMail(mailOptions, function(error, response){
 						if(error) {
