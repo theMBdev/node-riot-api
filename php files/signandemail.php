@@ -52,9 +52,9 @@ if (mysqli_query($conn, $sql)) {
 
 
 	// smtp_username
-	$usernameSmtp = 'apikey';
+	$usernameSmtp = '///////////////////////////';
 	// smtp_password
-	$passwordSmtp = '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';
+	$passwordSmtp = '//////////////////////////';
 
 
 	// configuration set.
