@@ -112,8 +112,8 @@ app.get('/', (req, res) => {
 
 	var position = "def";
 	const apiKey = apikey;
-	//	let accountName = "Top%209th%20Sup%20LFL2";
-	let accountName = "sudofo";
+	let accountName = "Original Pancake";
+	
 	//	let accountName = "hide on bush";
 	let accountId;
 	let id;
@@ -1057,6 +1057,8 @@ app.get('/', (req, res) => {
 			};
 
 			console.log("CALLBACK GET NAMES")
+			console.log("Summoner name", summonerName)
+			console.log("Summoner Id", accountId)
 
 		} else {
 			console.log("error 1", error, body)
@@ -1065,28 +1067,28 @@ app.get('/', (req, res) => {
 
 
 
-	async function getSummonerNameId() {
-		let response = await fetch(optionsGetName)
-		let data = await response.json()
-
-		apiCalls++;
-
-		console.log("CALLBACK GET NAMES NEWNEWNEWNEWNEWNEWNEWNEW")
-
-		let info = JSON.parse(data);
-		accountId = info.accountId;
-		id = info.id;
-		summonerName = info.name;
-
-		optionsGetMatches = {
-			url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
-		};
-
-		optionsGetRanks = {
-			url: `https://${zoneCode}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${apiKey}`
-		};
-
-	}
+	//	async function getSummonerNameId() {
+	//		let response = await fetch(optionsGetName)
+	//		let data = await response.json()
+	//
+	//		apiCalls++;
+	//
+	//		console.log("CALLBACK GET NAMES NEWNEWNEWNEWNEWNEWNEWNEW")
+	//
+	//		let info = JSON.parse(data);
+	//		accountId = info.accountId;
+	//		id = info.id;
+	//		summonerName = info.name;
+	//
+	//		optionsGetMatches = {
+	//			url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}?queue=420&queue=440&beginTime=${unix7daysAgo}&api_key=${apiKey}`		
+	//		};
+	//
+	//		optionsGetRanks = {
+	//			url: `https://${zoneCode}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${apiKey}`
+	//		};
+	//
+	//	}
 
 
 
@@ -1126,77 +1128,93 @@ app.get('/', (req, res) => {
 		if (!error && response.statusCode == 200) {
 			let info = JSON.parse(body);
 
-			apiCalls++;
-			matchCount = 0;
+			console.log("INFO.TOTAL", info.totalGames)
+			console.log("INFO", JSON.parse(body))
 
-			totalGames = info.totalGames;
-			manyValues["totalGames"] = info.totalGames;
+			if(info.totalGames === 0) {
+				console.log("NO MATCHES PLAYED")
+				return 
+			} else {
 
-			allMatches = info.matches;
+				apiCalls++;
+				matchCount = 0;
 
-			var interval = 100; // how much time should the delay between two iterations be (in milliseconds)?
-			var promise = Promise.resolve();
+				totalGames = info.totalGames;
+				manyValues["totalGames"] = info.totalGames;
 
-			//			queueId: 420 = Ranked Solo
-			//			queueId: 440 = Ranked Flex
+				allMatches = info.matches;
 
-			info.matches.forEach(element => {	
-				promise = promise.then(async function () {				
+				var interval = 100; // how much time should the delay between two iterations be (in milliseconds)?
+				var promise = Promise.resolve();
 
-					matchInfo = info.matches[matchCount];
-					gameId = info.matches[matchCount].gameId;
-					//					championIdArray.push(element.champion);
+				//			queueId: 420 = Ranked Solo
+				//			queueId: 440 = Ranked Flex
 
-					positionRole = element.role;
-					positionLane = element.lane;
+				info.matches.forEach(element => {	
+					promise = promise.then(async function () {				
 
-					if(positionLane === "TOP") {
-						topMatches.push(element);
-					}
+						matchInfo = info.matches[matchCount];
+						gameId = info.matches[matchCount].gameId;
+						//					championIdArray.push(element.champion);
 
-					if(positionLane === "MID") {
-						midMatches.push(element);
-					}
+						positionRole = element.role;
+						positionLane = element.lane;
 
-					if(positionLane === "JUNGLE") {
-						jungleMatches.push(element);
-					}
+						if(positionLane === "TOP") {
+							topMatches.push(element);
+						}
 
-					if(positionLane === "BOTTOM" && positionRole === "DUO_CARRY") {
-						adcMatches.push(element);
-					}
+						if(positionLane === "MID") {
+							midMatches.push(element);
+						}
 
-					if(positionRole === "DUO" && positionLane === "NONE") {
-						duoNoneMatches.push(element);
-					}
+						if(positionLane === "JUNGLE") {
+							jungleMatches.push(element);
+						}
 
-					if(positionRole === "DUO_SUPPORT") {
-						supportMatches.push(element);
-					}
+						if(positionLane === "BOTTOM" && positionRole === "DUO_CARRY") {
+							adcMatches.push(element);
+						}
 
-					let optionsGetOneMatch = {
-						url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
-					};			
+						if(positionRole === "DUO" && positionLane === "NONE") {
+							duoNoneMatches.push(element);
+						}
 
-					console.log("Match Count", matchCount)
-					console.log("Total Games", totalGames)
+						if(positionRole === "DUO_SUPPORT") {
+							supportMatches.push(element);
+						}
 
-					matchCount++;
+						let optionsGetOneMatch = {
+							url: `https://${zoneCode}.api.riotgames.com/lol/match/v4/matches/${gameId}?api_key=${apiKey}`
+						};			
 
-					// When all matches loaded start pulling the data from them
-					if(matchCount === totalGames) {
-						console.log("Total games loaded");
-						getMidData();
-					}
+						console.log("Match Count", matchCount)
+						console.log("Total Games", totalGames)
 
-					return new Promise(function (resolve) {
-						setTimeout(resolve, interval);
-					});
+						matchCount++;
+
+						// When all matches loaded start pulling the data from them
+						if(matchCount === totalGames) {
+							console.log("Total games loaded");
+							getMidData();
+						}
+
+						return new Promise(function (resolve) {
+							setTimeout(resolve, interval);
+						});
+					})
 				})
-			})
+
+			}
 
 		} else {
-			console.log("error 2", error, body)			
+//			throw new Error("Whoops!");
+			console.log("error 2", error, body)				
+			if(response.statusCode === 404) {
+				console.log("Most likley no games found");
+				return
+			}
+
 		}
 	}		
 
@@ -1205,7 +1223,13 @@ app.get('/', (req, res) => {
 		await request(optionsGetName, callbackGetName);
 		await request(optionsGetRanks, callbackGetRanks);
 		// calls getMidData that calls the next function when finished
-		await request(optionsGetMatches, callbackGetMatches);
+
+		try {
+			await request(optionsGetMatches, callbackGetMatches);
+		} catch(err) {
+			//alert(err); // TypeError: failed to fetch
+			console.log("err 2 STOPPING EXECUTION"); // TypeError: failed to fetch
+		}
 	}	
 
 	startEverything();
@@ -1278,7 +1302,7 @@ app.get('/', (req, res) => {
 			await finaliseData();
 
 
-			
+
 			app.set('views', path.join(__dirname, '/emails'));
 
 
@@ -1300,9 +1324,9 @@ app.get('/', (req, res) => {
 						html: html 
 					};
 
-//					location to view email
-//					https://mailtrap.io/inboxes/
-					
+					//					location to view email
+					//					https://mailtrap.io/inboxes/
+
 					//Execute this to send the mail
 					transporter.sendMail(mailOptions, function(error, response){
 						if(error) {
